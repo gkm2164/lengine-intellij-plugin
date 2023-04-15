@@ -1,0 +1,20 @@
+{
+    parserClass="io.lengine.lengineintellijplugin.LengineParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Lengine"
+    psiImplClassSuffix="Impl"
+    psiPackage="io.lengine.lengineintellijplugin.psi"
+    psiImplPackage="io.lengine.lengineintellijplugin.psi.impl"
+
+    elementTypeHolderClass="io.lengine.lengineintellijplugin.psi.LengineTypes"
+    elementTypeClass="io.lengine.lengineintellijplugin.psi.LengineElementType"
+    tokenTypeClass="io.lengine.lengineintellijplugin.psi.LengineTokenType"
+}
+
+lengineFile ::= item_*
+
+private item_ ::= (statement | COMMENT | CRLF)
+
+statement ::= (KEY? SEPARATOR VALUE?)

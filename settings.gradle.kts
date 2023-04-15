@@ -1,0 +1,1 @@
+rootProject.name = "lengine-intellij-plugin"
