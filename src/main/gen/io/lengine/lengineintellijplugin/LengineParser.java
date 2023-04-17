@@ -36,13 +36,208 @@ public class LengineParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // property | COMMENT | CRLF
+  // LEFT_BRACKET stmt* RIGHT_BRACKET
+  public static boolean array(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array")) return false;
+    if (!nextTokenIs(b, LEFT_BRACKET)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LEFT_BRACKET);
+    r = r && array_1(b, l + 1);
+    r = r && consumeToken(b, RIGHT_BRACKET);
+    exit_section_(b, m, ARRAY, r);
+    return r;
+  }
+
+  // stmt*
+  private static boolean array_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!stmt(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "array_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // COMPLEX_NUMBER_PARENTHESIS numbers_value numbers_value RIGHT_PARENTHESIS
+  public static boolean complex_number(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "complex_number")) return false;
+    if (!nextTokenIs(b, COMPLEX_NUMBER_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMPLEX_NUMBER_PARENTHESIS);
+    r = r && numbers_value(b, l + 1);
+    r = r && numbers_value(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, COMPLEX_NUMBER, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS DEF def_symbol stmt RIGHT_PARENTHESIS
+  public static boolean def_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "def_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, DEF);
+    r = r && def_symbol(b, l + 1);
+    r = r && stmt(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, DEF_STMT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // SYMBOL
+  public static boolean def_symbol(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "def_symbol")) return false;
+    if (!nextTokenIs(b, SYMBOL)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SYMBOL);
+    exit_section_(b, m, DEF_SYMBOL, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS FN SYMBOL LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+  public static boolean fn_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fn_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, FN, SYMBOL, LEFT_PARENTHESIS);
+    r = r && fn_stmt_4(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    r = r && stmt(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, FN_STMT, r);
+    return r;
+  }
+
+  // SYMBOL+
+  private static boolean fn_stmt_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fn_stmt_4")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SYMBOL);
+    while (r) {
+      int c = current_position_(b);
+      if (!consumeToken(b, SYMBOL)) break;
+      if (!empty_element_parsed_guard_(b, "fn_stmt_4", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // FOR SYMBOL IN stmt
+  public static boolean for_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_stmt")) return false;
+    if (!nextTokenIs(b, FOR)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, FOR, SYMBOL, IN);
+    r = r && stmt(b, l + 1);
+    exit_section_(b, m, FOR_STMT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS IMPORT SYMBOL RIGHT_PARENTHESIS
+  public static boolean import_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "import_statement")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, IMPORT, SYMBOL, RIGHT_PARENTHESIS);
+    exit_section_(b, m, IMPORT_STATEMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // statement | COMMENT | CRLF
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
-    r = property(b, l + 1);
+    r = statement(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LAMBDA_PARENTHESIS LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+  //              |  LEFT_PARENTHESIS LAMBDA LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+  public static boolean lambda_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "lambda_stmt")) return false;
+    if (!nextTokenIs(b, "<lambda stmt>", LAMBDA_PARENTHESIS, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, LAMBDA_STMT, "<lambda stmt>");
+    r = lambda_stmt_0(b, l + 1);
+    if (!r) r = lambda_stmt_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // LAMBDA_PARENTHESIS LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+  private static boolean lambda_stmt_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "lambda_stmt_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LAMBDA_PARENTHESIS, LEFT_PARENTHESIS);
+    r = r && lambda_stmt_0_2(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    r = r && stmt(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SYMBOL+
+  private static boolean lambda_stmt_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "lambda_stmt_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SYMBOL);
+    while (r) {
+      int c = current_position_(b);
+      if (!consumeToken(b, SYMBOL)) break;
+      if (!empty_element_parsed_guard_(b, "lambda_stmt_0_2", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // LEFT_PARENTHESIS LAMBDA LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+  private static boolean lambda_stmt_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "lambda_stmt_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, LAMBDA, LEFT_PARENTHESIS);
+    r = r && lambda_stmt_1_3(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    r = r && stmt(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SYMBOL+
+  private static boolean lambda_stmt_1_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "lambda_stmt_1_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SYMBOL);
+    while (r) {
+      int c = current_position_(b);
+      if (!consumeToken(b, SYMBOL)) break;
+      if (!empty_element_parsed_guard_(b, "lambda_stmt_1_3", c)) break;
+    }
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -59,31 +254,225 @@ public class LengineParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KEY? SEPARATOR VALUE?
-  public static boolean property(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property")) return false;
-    if (!nextTokenIs(b, "<property>", KEY, SEPARATOR)) return false;
+  // LEFT_PARENTHESIS SYMBOL stmt RIGHT_PARENTHESIS
+  public static boolean let_decl_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "let_decl_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PROPERTY, "<property>");
-    r = property_0(b, l + 1);
-    r = r && consumeToken(b, SEPARATOR);
-    r = r && property_2(b, l + 1);
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, SYMBOL);
+    r = r && stmt(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, LET_DECL_STMT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS LET LEFT_PARENTHESIS let_decl_stmt* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+  public static boolean let_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "let_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, LET, LEFT_PARENTHESIS);
+    r = r && let_stmt_3(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    r = r && stmt(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, LET_STMT, r);
+    return r;
+  }
+
+  // let_decl_stmt*
+  private static boolean let_stmt_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "let_stmt_3")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!let_decl_stmt(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "let_stmt_3", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS LOOP for_stmt* stmt RIGHT_PARENTHESIS
+  public static boolean loop_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "loop_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, LOOP);
+    r = r && loop_stmt_2(b, l + 1);
+    r = r && stmt(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, LOOP_STMT, r);
+    return r;
+  }
+
+  // for_stmt*
+  private static boolean loop_stmt_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "loop_stmt_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!for_stmt(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "loop_stmt_2", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS MODULE SYMBOL RIGHT_PARENTHESIS
+  public static boolean module_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "module_statement")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, MODULE, SYMBOL, RIGHT_PARENTHESIS);
+    exit_section_(b, m, MODULE_STATEMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // NUMBER
+  //                |  RATIO_NUMBER
+  public static boolean numbers_value(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "numbers_value")) return false;
+    if (!nextTokenIs(b, "<numbers value>", NUMBER, RATIO_NUMBER)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, NUMBERS_VALUE, "<numbers value>");
+    r = consumeToken(b, NUMBER);
+    if (!r) r = consumeToken(b, RATIO_NUMBER);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // KEY?
-  private static boolean property_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property_0")) return false;
-    consumeToken(b, KEY);
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS RECOVER SYMBOL stmt RIGHT_PARENTHESIS
+  public static boolean recover_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "recover_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, RECOVER, SYMBOL);
+    r = r && stmt(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, RECOVER_STMT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS REQUIRE STRING RIGHT_PARENTHESIS
+  public static boolean require_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "require_statement")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, REQUIRE, STRING, RIGHT_PARENTHESIS);
+    exit_section_(b, m, REQUIRE_STATEMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // module_statement
+  //            |  import_statement
+  //            |  require_statement
+  //            |  stmt
+  public static boolean statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STATEMENT, "<statement>");
+    r = module_statement(b, l + 1);
+    if (!r) r = import_statement(b, l + 1);
+    if (!r) r = require_statement(b, l + 1);
+    if (!r) r = stmt(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (LEFT_PARENTHESIS stmt* RIGHT_PARENTHESIS)
+  //        | fn_stmt
+  //        | def_stmt
+  //        | let_stmt
+  //        | loop_stmt
+  //        | try_stmt
+  //        | values
+  public static boolean stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "stmt")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STMT, "<stmt>");
+    r = stmt_0(b, l + 1);
+    if (!r) r = fn_stmt(b, l + 1);
+    if (!r) r = def_stmt(b, l + 1);
+    if (!r) r = let_stmt(b, l + 1);
+    if (!r) r = loop_stmt(b, l + 1);
+    if (!r) r = try_stmt(b, l + 1);
+    if (!r) r = values(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // LEFT_PARENTHESIS stmt* RIGHT_PARENTHESIS
+  private static boolean stmt_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "stmt_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LEFT_PARENTHESIS);
+    r = r && stmt_0_1(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // stmt*
+  private static boolean stmt_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "stmt_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!stmt(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "stmt_0_1", c)) break;
+    }
     return true;
   }
 
-  // VALUE?
-  private static boolean property_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property_2")) return false;
-    consumeToken(b, VALUE);
-    return true;
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS TRY stmt recover_stmt RIGHT_PARENTHESIS
+  public static boolean try_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "try_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, TRY);
+    r = r && stmt(b, l + 1);
+    r = r && recover_stmt(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, TRY_STMT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // SYMBOL
+  //         |  array
+  //         |  numbers_value
+  //         |  complex_number
+  //         |  OBJECT_SYMBOL
+  //         |  lambda_stmt
+  //         |  STRING
+  //         |  CHARACTER
+  public static boolean values(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "values")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, VALUES, "<values>");
+    r = consumeToken(b, SYMBOL);
+    if (!r) r = array(b, l + 1);
+    if (!r) r = numbers_value(b, l + 1);
+    if (!r) r = complex_number(b, l + 1);
+    if (!r) r = consumeToken(b, OBJECT_SYMBOL);
+    if (!r) r = lambda_stmt(b, l + 1);
+    if (!r) r = consumeToken(b, STRING);
+    if (!r) r = consumeToken(b, CHARACTER);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
 }

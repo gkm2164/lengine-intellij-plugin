@@ -17,4 +17,59 @@ lengineFile ::= item_*
 
 private item_ ::= (statement | COMMENT | CRLF)
 
-statement ::= (KEY? SEPARATOR VALUE?)
+statement ::= module_statement
+           |  import_statement
+           |  require_statement
+           |  stmt
+
+module_statement ::= (LEFT_PARENTHESIS MODULE SYMBOL RIGHT_PARENTHESIS)
+
+import_statement ::= (LEFT_PARENTHESIS IMPORT SYMBOL RIGHT_PARENTHESIS)
+
+require_statement ::= (LEFT_PARENTHESIS REQUIRE STRING RIGHT_PARENTHESIS)
+
+stmt   ::= (LEFT_PARENTHESIS stmt* RIGHT_PARENTHESIS)
+       | fn_stmt
+       | def_stmt
+       | let_stmt
+       | loop_stmt
+       | try_stmt
+       | values
+
+fn_stmt ::= (LEFT_PARENTHESIS FN SYMBOL LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS)
+
+def_stmt ::= (LEFT_PARENTHESIS DEF def_symbol stmt RIGHT_PARENTHESIS)
+
+def_symbol ::= SYMBOL
+
+let_stmt ::= (LEFT_PARENTHESIS LET LEFT_PARENTHESIS let_decl_stmt* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS)
+
+let_decl_stmt ::= (LEFT_PARENTHESIS SYMBOL stmt RIGHT_PARENTHESIS)
+
+loop_stmt ::= (LEFT_PARENTHESIS LOOP for_stmt* stmt RIGHT_PARENTHESIS)
+
+for_stmt ::= FOR SYMBOL IN stmt
+
+try_stmt ::= (LEFT_PARENTHESIS TRY stmt recover_stmt RIGHT_PARENTHESIS)
+
+recover_stmt ::= (LEFT_PARENTHESIS RECOVER SYMBOL stmt RIGHT_PARENTHESIS)
+
+values ::= SYMBOL
+        |  array
+        |  numbers_value
+        |  complex_number
+        |  OBJECT_SYMBOL
+        |  lambda_stmt
+        |  STRING
+        |  CHARACTER
+
+array  ::= LEFT_BRACKET stmt* RIGHT_BRACKET
+
+lambda_stmt ::= LAMBDA_PARENTHESIS LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+             |  LEFT_PARENTHESIS LAMBDA LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+
+numbers_value ::= NUMBER
+               |  RATIO_NUMBER
+
+complex_number ::= COMPLEX_NUMBER_PARENTHESIS numbers_value numbers_value RIGHT_PARENTHESIS
+

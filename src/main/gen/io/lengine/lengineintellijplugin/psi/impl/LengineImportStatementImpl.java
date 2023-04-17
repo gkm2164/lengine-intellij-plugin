@@ -11,14 +11,14 @@ import static io.lengine.lengineintellijplugin.psi.LengineTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.lengine.lengineintellijplugin.psi.*;
 
-public class LenginePropertyImpl extends ASTWrapperPsiElement implements LengineProperty {
+public class LengineImportStatementImpl extends ASTWrapperPsiElement implements LengineImportStatement {
 
-  public LenginePropertyImpl(@NotNull ASTNode node) {
+  public LengineImportStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull LengineVisitor visitor) {
-    visitor.visitProperty(this);
+    visitor.visitImportStatement(this);
   }
 
   @Override

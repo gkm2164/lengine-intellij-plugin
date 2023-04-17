@@ -5,6 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LengineProperty extends PsiElement {
+public interface LengineLetStmt extends PsiElement {
+
+  @NotNull
+  List<LengineLetDeclStmt> getLetDeclStmtList();
+
+  @NotNull
+  LengineStmt getStmt();
 
 }
