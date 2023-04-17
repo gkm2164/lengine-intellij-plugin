@@ -361,6 +361,44 @@ public class LengineParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // LEFT_BRACE object_value_entry* RIGHT_BRACE
+  public static boolean object_value(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_value")) return false;
+    if (!nextTokenIs(b, LEFT_BRACE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LEFT_BRACE);
+    r = r && object_value_1(b, l + 1);
+    r = r && consumeToken(b, RIGHT_BRACE);
+    exit_section_(b, m, OBJECT_VALUE, r);
+    return r;
+  }
+
+  // object_value_entry*
+  private static boolean object_value_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_value_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!object_value_entry(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "object_value_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // OBJECT_SYMBOL values
+  public static boolean object_value_entry(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_value_entry")) return false;
+    if (!nextTokenIs(b, OBJECT_SYMBOL)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OBJECT_SYMBOL);
+    r = r && values(b, l + 1);
+    exit_section_(b, m, OBJECT_VALUE_ENTRY, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // LEFT_PARENTHESIS RECOVER SYMBOL stmt RIGHT_PARENTHESIS
   public static boolean recover_stmt(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "recover_stmt")) return false;
@@ -473,6 +511,7 @@ public class LengineParser implements PsiParser, LightPsiParser {
   //         |  lambda_stmt
   //         |  STRING
   //         |  CHARACTER
+  //         |  object_value
   public static boolean values(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "values")) return false;
     boolean r;
@@ -485,6 +524,7 @@ public class LengineParser implements PsiParser, LightPsiParser {
     if (!r) r = lambda_stmt(b, l + 1);
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, CHARACTER);
+    if (!r) r = object_value(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

@@ -19,7 +19,7 @@ CRLF=\R
 LEFT_PARENTHESIS = "("
 RIGHT_PARENTHESIS = ")"
 COMPLEX_NUMBER_PARENTHESIS = "#C("
-LAMBDA_PARENTHESIS = "'("
+LAMBDA_PARENTHESIS = "^("
 WHITE_SPACE = [\ \n\t\f]
 END_OF_LINE_COMMENT = ";"[^\r\n]*
 MODULE="module"
@@ -41,10 +41,12 @@ NUMBER = {INTEGER}(\.{INTEGER})?
 OBJECT_SYMBOL=":"([$.a-zA-Z_\-+/*%<>=?:'&|~][$.a-zA-Z0-9_\-+/*%<>=?:'&|~]*\*?)
 SYMBOL=([$.a-zA-Z_\-+/*%<>=?:'&|~][$.a-zA-Z0-9_\-+/*%<>=?:'&|~]*\*?)
 DOUBLE_QUOTE=\"
-STRING={DOUBLE_QUOTE}[^\"]+{DOUBLE_QUOTE}
+STRING={DOUBLE_QUOTE}[^\"]*{DOUBLE_QUOTE}
 LEFT_BRACKET="["
 RIGHT_BRACKET="]"
-CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'&|~]
+LEFT_BRACE="{"
+RIGHT_BRACE="}"
+CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'&|~0-9]
 
 %state WAITING_VALUE
 %state STRING_VALUE
@@ -54,6 +56,8 @@ CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'&|~]
 <YYINITIAL> {RIGHT_PARENTHESIS}                             { yybegin(YYINITIAL); return LengineTypes.RIGHT_PARENTHESIS; }
 <YYINITIAL> {LEFT_BRACKET}                                  { yybegin(YYINITIAL); return LengineTypes.LEFT_BRACKET; }
 <YYINITIAL> {RIGHT_BRACKET}                                 { yybegin(YYINITIAL); return LengineTypes.RIGHT_BRACKET; }
+<YYINITIAL> {LEFT_BRACE}                                    { yybegin(YYINITIAL); return LengineTypes.LEFT_BRACE; }
+<YYINITIAL> {RIGHT_BRACE}                                   { yybegin(YYINITIAL); return LengineTypes.RIGHT_BRACE; }
 <YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return LengineTypes.COMMENT; }
 <YYINITIAL> {MODULE}                                        { yybegin(YYINITIAL); return LengineTypes.MODULE; }
 <YYINITIAL> {REQUIRE}                                       { yybegin(YYINITIAL); return LengineTypes.REQUIRE; }

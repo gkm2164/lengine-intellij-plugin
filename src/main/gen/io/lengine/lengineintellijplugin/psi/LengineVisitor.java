@@ -63,6 +63,14 @@ public class LengineVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitObjectValue(@NotNull LengineObjectValue o) {
+    visitPsiElement(o);
+  }
+
+  public void visitObjectValueEntry(@NotNull LengineObjectValueEntry o) {
+    visitPsiElement(o);
+  }
+
   public void visitRecoverStmt(@NotNull LengineRecoverStmt o) {
     visitPsiElement(o);
   }

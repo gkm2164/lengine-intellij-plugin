@@ -51,23 +51,23 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
     }
 
     companion object {
-        private val KEY = createTextAttributesKey("LENGINE_KEY",
+        val KEY = createTextAttributesKey("LENGINE_KEY",
             DefaultLanguageHighlighterColors.KEYWORD)
-        private val IDENTIFIER = createTextAttributesKey("LENGINE_IDENTIFIER",
+        val IDENTIFIER = createTextAttributesKey("LENGINE_IDENTIFIER",
             DefaultLanguageHighlighterColors.IDENTIFIER)
-        private val FIELD = createTextAttributesKey("LENGINE_FIELD",
+        val FIELD = createTextAttributesKey("LENGINE_FIELD",
             DefaultLanguageHighlighterColors.INSTANCE_FIELD)
-        private val STRING = createTextAttributesKey("LENGINE_STRING",
+        val STRING = createTextAttributesKey("LENGINE_STRING",
             DefaultLanguageHighlighterColors.STRING)
-        private val NUMBER = createTextAttributesKey("LENGINE_NUMBER",
+        val NUMBER = createTextAttributesKey("LENGINE_NUMBER",
             DefaultLanguageHighlighterColors.NUMBER)
-        private val COMMENT = createTextAttributesKey("LENGINE_COMMENT",
+        val COMMENT = createTextAttributesKey("LENGINE_COMMENT",
             DefaultLanguageHighlighterColors.LINE_COMMENT)
-        private val PARENTHESIS = createTextAttributesKey("LENGINE_PARENTHESIS",
+        val PARENTHESIS = createTextAttributesKey("LENGINE_PARENTHESIS",
             DefaultLanguageHighlighterColors.PARENTHESES)
-        private val FUNCTION = createTextAttributesKey("LENGINE_FUNCTION",
+        val FUNCTION = createTextAttributesKey("LENGINE_FUNCTION",
             DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)
-        private val BAD_CHARACTER = createTextAttributesKey("LENGINE_BAD_CHARACTER",
+        val BAD_CHARACTER = createTextAttributesKey("LENGINE_BAD_CHARACTER",
             HighlighterColors.BAD_CHARACTER)
 
         val BAD_CHAR_KEYS = arrayOf(BAD_CHARACTER)

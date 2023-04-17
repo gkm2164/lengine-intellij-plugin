@@ -64,6 +64,7 @@ values ::= SYMBOL
         |  lambda_stmt
         |  STRING
         |  CHARACTER
+        |  object_value
 
 array  ::= LEFT_BRACKET stmt* RIGHT_BRACKET
 
@@ -72,6 +73,10 @@ lambda_stmt ::= LAMBDA_PARENTHESIS LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS st
 
 numbers_value ::= NUMBER
                |  RATIO_NUMBER
+
+object_value ::= LEFT_BRACE object_value_entry* RIGHT_BRACE
+
+object_value_entry ::= OBJECT_SYMBOL values
 
 complex_number ::= COMPLEX_NUMBER_PARENTHESIS numbers_value numbers_value RIGHT_PARENTHESIS
 

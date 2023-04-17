@@ -22,6 +22,8 @@ public interface LengineTypes {
   IElementType LOOP_STMT = new LengineElementType("LOOP_STMT");
   IElementType MODULE_STATEMENT = new LengineElementType("MODULE_STATEMENT");
   IElementType NUMBERS_VALUE = new LengineElementType("NUMBERS_VALUE");
+  IElementType OBJECT_VALUE = new LengineElementType("OBJECT_VALUE");
+  IElementType OBJECT_VALUE_ENTRY = new LengineElementType("OBJECT_VALUE_ENTRY");
   IElementType RECOVER_STMT = new LengineElementType("RECOVER_STMT");
   IElementType REQUIRE_STATEMENT = new LengineElementType("REQUIRE_STATEMENT");
   IElementType STATEMENT = new LengineElementType("STATEMENT");
@@ -40,6 +42,7 @@ public interface LengineTypes {
   IElementType IN = new LengineTokenType("IN");
   IElementType LAMBDA = new LengineTokenType("LAMBDA");
   IElementType LAMBDA_PARENTHESIS = new LengineTokenType("LAMBDA_PARENTHESIS");
+  IElementType LEFT_BRACE = new LengineTokenType("LEFT_BRACE");
   IElementType LEFT_BRACKET = new LengineTokenType("LEFT_BRACKET");
   IElementType LEFT_PARENTHESIS = new LengineTokenType("LEFT_PARENTHESIS");
   IElementType LET = new LengineTokenType("LET");
@@ -50,6 +53,7 @@ public interface LengineTypes {
   IElementType RATIO_NUMBER = new LengineTokenType("RATIO_NUMBER");
   IElementType RECOVER = new LengineTokenType("RECOVER");
   IElementType REQUIRE = new LengineTokenType("REQUIRE");
+  IElementType RIGHT_BRACE = new LengineTokenType("RIGHT_BRACE");
   IElementType RIGHT_BRACKET = new LengineTokenType("RIGHT_BRACKET");
   IElementType RIGHT_PARENTHESIS = new LengineTokenType("RIGHT_PARENTHESIS");
   IElementType STRING = new LengineTokenType("STRING");
@@ -100,6 +104,12 @@ public interface LengineTypes {
       }
       else if (type == NUMBERS_VALUE) {
         return new LengineNumbersValueImpl(node);
+      }
+      else if (type == OBJECT_VALUE) {
+        return new LengineObjectValueImpl(node);
+      }
+      else if (type == OBJECT_VALUE_ENTRY) {
+        return new LengineObjectValueEntryImpl(node);
       }
       else if (type == RECOVER_STMT) {
         return new LengineRecoverStmtImpl(node);

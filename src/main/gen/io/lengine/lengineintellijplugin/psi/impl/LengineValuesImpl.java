@@ -51,4 +51,10 @@ public class LengineValuesImpl extends ASTWrapperPsiElement implements LengineVa
     return findChildByClass(LengineNumbersValue.class);
   }
 
+  @Override
+  @Nullable
+  public LengineObjectValue getObjectValue() {
+    return findChildByClass(LengineObjectValue.class);
+  }
+
 }

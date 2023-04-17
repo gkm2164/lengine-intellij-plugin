@@ -8,9 +8,5 @@ import io.lengine.lengineintellijplugin.psi.impl.LengineFnSymbolImpl
 
 class LengineAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
-        println(element)
-        if (element.instanceOf(LengineFnSymbolImpl::class)) {
-
-        }
     }
 }
