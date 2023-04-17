@@ -13,6 +13,7 @@ public interface LengineTypes {
   IElementType DEF_STMT = new LengineElementType("DEF_STMT");
   IElementType DEF_SYMBOL = new LengineElementType("DEF_SYMBOL");
   IElementType FN_STMT = new LengineElementType("FN_STMT");
+  IElementType FN_SYMBOL = new LengineElementType("FN_SYMBOL");
   IElementType FOR_STMT = new LengineElementType("FOR_STMT");
   IElementType IMPORT_STATEMENT = new LengineElementType("IMPORT_STATEMENT");
   IElementType LAMBDA_STMT = new LengineElementType("LAMBDA_STMT");
@@ -72,6 +73,9 @@ public interface LengineTypes {
       }
       else if (type == FN_STMT) {
         return new LengineFnStmtImpl(node);
+      }
+      else if (type == FN_SYMBOL) {
+        return new LengineFnSymbolImpl(node);
       }
       else if (type == FOR_STMT) {
         return new LengineForStmtImpl(node);

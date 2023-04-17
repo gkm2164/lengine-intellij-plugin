@@ -11,32 +11,20 @@ import static io.lengine.lengineintellijplugin.psi.LengineTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.lengine.lengineintellijplugin.psi.*;
 
-public class LengineFnStmtImpl extends ASTWrapperPsiElement implements LengineFnStmt {
+public class LengineFnSymbolImpl extends ASTWrapperPsiElement implements LengineFnSymbol {
 
-  public LengineFnStmtImpl(@NotNull ASTNode node) {
+  public LengineFnSymbolImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull LengineVisitor visitor) {
-    visitor.visitFnStmt(this);
+    visitor.visitFnSymbol(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof LengineVisitor) accept((LengineVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public LengineFnSymbol getFnSymbol() {
-    return findNotNullChildByClass(LengineFnSymbol.class);
-  }
-
-  @Override
-  @NotNull
-  public LengineStmt getStmt() {
-    return findNotNullChildByClass(LengineStmt.class);
   }
 
 }

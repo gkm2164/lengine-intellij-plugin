@@ -8,6 +8,9 @@ import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributes
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
+import io.ktor.util.reflect.*
+import io.lengine.lengineintellijplugin.psi.LengineElementType
+import io.lengine.lengineintellijplugin.psi.LengineTokenType
 import io.lengine.lengineintellijplugin.psi.LengineTypes
 
 class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
@@ -34,9 +37,10 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
             LengineTypes.TRY,
             LengineTypes.RECOVER -> KEY_KEYS
             LengineTypes.STRING, LengineTypes.CHARACTER -> STRING_KEYS
+            LengineTypes.FN_SYMBOL -> FN_KEYS
             LengineTypes.DEF_SYMBOL -> FIELD_KEYS
             LengineTypes.SYMBOL -> IDENTIFIER_KEYS
-            LengineTypes.OBJECT_SYMBOL -> IDENTIFIER_KEYS
+            LengineTypes.OBJECT_SYMBOL -> FIELD_KEYS
             LengineTypes.COMMENT -> COMMENT_KEYS
             LengineTypes.NUMBER -> NUMBER_KEYS
             LengineTypes.RATIO_NUMBER -> NUMBER_KEYS
@@ -47,15 +51,24 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
     }
 
     companion object {
-        val SEPARATOR = createTextAttributesKey("LENGINE_SEPARATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN)
-        val KEY = createTextAttributesKey("LENGINE_KEY", DefaultLanguageHighlighterColors.KEYWORD)
-        val IDENTIFIER = createTextAttributesKey("LENGINE_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER)
-        val FIELD = createTextAttributesKey("LENGINE_FIELD", DefaultLanguageHighlighterColors.STATIC_FIELD)
-        val STRING = createTextAttributesKey("LENGINE_STRING", DefaultLanguageHighlighterColors.STRING)
-        val NUMBER = createTextAttributesKey("LENGINE_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
-        val COMMENT = createTextAttributesKey("LENGINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
-        val BAD_CHARACTER = createTextAttributesKey("LENGINE_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)
-        val PARENTHESIS = createTextAttributesKey("LENGINE_PARENTHESIS", DefaultLanguageHighlighterColors.PARENTHESES)
+        private val KEY = createTextAttributesKey("LENGINE_KEY",
+            DefaultLanguageHighlighterColors.KEYWORD)
+        private val IDENTIFIER = createTextAttributesKey("LENGINE_IDENTIFIER",
+            DefaultLanguageHighlighterColors.IDENTIFIER)
+        private val FIELD = createTextAttributesKey("LENGINE_FIELD",
+            DefaultLanguageHighlighterColors.INSTANCE_FIELD)
+        private val STRING = createTextAttributesKey("LENGINE_STRING",
+            DefaultLanguageHighlighterColors.STRING)
+        private val NUMBER = createTextAttributesKey("LENGINE_NUMBER",
+            DefaultLanguageHighlighterColors.NUMBER)
+        private val COMMENT = createTextAttributesKey("LENGINE_COMMENT",
+            DefaultLanguageHighlighterColors.LINE_COMMENT)
+        private val PARENTHESIS = createTextAttributesKey("LENGINE_PARENTHESIS",
+            DefaultLanguageHighlighterColors.PARENTHESES)
+        private val FUNCTION = createTextAttributesKey("LENGINE_FUNCTION",
+            DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)
+        private val BAD_CHARACTER = createTextAttributesKey("LENGINE_BAD_CHARACTER",
+            HighlighterColors.BAD_CHARACTER)
 
         val BAD_CHAR_KEYS = arrayOf(BAD_CHARACTER)
         val IDENTIFIER_KEYS = arrayOf(IDENTIFIER)
@@ -65,6 +78,7 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
         val NUMBER_KEYS = arrayOf(NUMBER)
         val COMMENT_KEYS = arrayOf(COMMENT)
         val PARENTHESIS_KEYS = arrayOf(PARENTHESIS)
+        val FN_KEYS = arrayOf(FUNCTION)
         val EMPTY_KEYS = arrayOf<TextAttributesKey>()
     }
 }

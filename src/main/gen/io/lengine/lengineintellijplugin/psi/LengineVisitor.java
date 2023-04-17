@@ -27,6 +27,10 @@ public class LengineVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFnSymbol(@NotNull LengineFnSymbol o) {
+    visitPsiElement(o);
+  }
+
   public void visitForStmt(@NotNull LengineForStmt o) {
     visitPsiElement(o);
   }

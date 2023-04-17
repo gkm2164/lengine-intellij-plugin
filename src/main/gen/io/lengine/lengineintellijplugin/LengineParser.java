@@ -103,13 +103,15 @@ public class LengineParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LEFT_PARENTHESIS FN SYMBOL LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+  // LEFT_PARENTHESIS FN fn_symbol LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
   public static boolean fn_stmt(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fn_stmt")) return false;
     if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, LEFT_PARENTHESIS, FN, SYMBOL, LEFT_PARENTHESIS);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, FN);
+    r = r && fn_symbol(b, l + 1);
+    r = r && consumeToken(b, LEFT_PARENTHESIS);
     r = r && fn_stmt_4(b, l + 1);
     r = r && consumeToken(b, RIGHT_PARENTHESIS);
     r = r && stmt(b, l + 1);
@@ -130,6 +132,18 @@ public class LengineParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "fn_stmt_4", c)) break;
     }
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // SYMBOL
+  public static boolean fn_symbol(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "fn_symbol")) return false;
+    if (!nextTokenIs(b, SYMBOL)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SYMBOL);
+    exit_section_(b, m, FN_SYMBOL, r);
     return r;
   }
 

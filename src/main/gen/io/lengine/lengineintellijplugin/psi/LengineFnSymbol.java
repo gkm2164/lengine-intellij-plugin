@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LengineFnStmt extends PsiElement {
-
-  @NotNull
-  LengineFnSymbol getFnSymbol();
-
-  @NotNull
-  LengineStmt getStmt();
+public interface LengineFnSymbol extends PsiElement {
 
 }
