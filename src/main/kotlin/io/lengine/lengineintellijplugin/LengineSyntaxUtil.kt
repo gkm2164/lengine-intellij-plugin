@@ -29,7 +29,7 @@ class LengineSyntaxUtil {
         }
 
         fun isFunctionLikeSymbol(element: PsiElement): Boolean {
-            if (isVariableSymbol(element)) {
+            if (!isVariableSymbol(element)) {
                 return false
             }
 

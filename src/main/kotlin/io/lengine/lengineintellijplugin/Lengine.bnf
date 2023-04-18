@@ -29,14 +29,26 @@ import_statement ::= (LEFT_PARENTHESIS IMPORT SYMBOL RIGHT_PARENTHESIS)
 require_statement ::= (LEFT_PARENTHESIS REQUIRE STRING RIGHT_PARENTHESIS)
 
 stmt   ::= (LEFT_PARENTHESIS stmt* RIGHT_PARENTHESIS)
+       | (LAZY_PARENTHESIS stmt* RIGHT_PARENTHESIS)
        | fn_stmt
        | def_stmt
        | let_stmt
        | loop_stmt
        | try_stmt
+       | export_stmt
+       | import_stmt
+       | native_stmt
        | values
 
-fn_stmt ::= (LEFT_PARENTHESIS FN fn_symbol LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS)
+export_stmt ::= (LEFT_PARENTHESIS EXPORT SYMBOL stmt? RIGHT_PARENTHESIS)
+
+import_stmt ::= (LEFT_PARENTHESIS IMPORT SYMBOL RIGHT_PARENTHESIS)
+
+native_stmt ::= (LEFT_PARENTHESIS NATIVE SYMBOL type RIGHT_PARENTHESIS)
+
+type ::= VAR | FN
+
+fn_stmt ::= (LEFT_PARENTHESIS FN fn_symbol LEFT_PARENTHESIS SYMBOL* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS)
 
 fn_symbol ::= SYMBOL
 
@@ -44,7 +56,7 @@ def_stmt ::= (LEFT_PARENTHESIS DEF def_symbol stmt RIGHT_PARENTHESIS)
 
 def_symbol ::= SYMBOL
 
-let_stmt ::= (LEFT_PARENTHESIS LET LEFT_PARENTHESIS let_decl_stmt* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS)
+let_stmt ::= ((LEFT_PARENTHESIS | LAZY_PARENTHESIS) LET LEFT_PARENTHESIS let_decl_stmt* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS)
 
 let_decl_stmt ::= (LEFT_PARENTHESIS SYMBOL stmt RIGHT_PARENTHESIS)
 
@@ -65,11 +77,13 @@ values ::= SYMBOL
         |  STRING
         |  CHARACTER
         |  object_value
+        |  do_stmt
+        |  if_stmt
 
 array  ::= LEFT_BRACKET stmt* RIGHT_BRACKET
 
-lambda_stmt ::= LAMBDA_PARENTHESIS LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
-             |  LEFT_PARENTHESIS LAMBDA LEFT_PARENTHESIS SYMBOL+ RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+lambda_stmt ::= LAMBDA_PARENTHESIS LEFT_PARENTHESIS SYMBOL* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+             |  LEFT_PARENTHESIS LAMBDA LEFT_PARENTHESIS SYMBOL* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
 
 numbers_value ::= NUMBER
                |  RATIO_NUMBER
@@ -80,3 +94,6 @@ object_value_entry ::= OBJECT_SYMBOL values
 
 complex_number ::= COMPLEX_NUMBER_PARENTHESIS numbers_value numbers_value RIGHT_PARENTHESIS
 
+do_stmt ::= (LEFT_PARENTHESIS DO stmt* RETURN stmt RIGHT_PARENTHESIS)
+
+if_stmt ::= (LEFT_PARENTHESIS IF stmt stmt stmt RIGHT_PARENTHESIS)

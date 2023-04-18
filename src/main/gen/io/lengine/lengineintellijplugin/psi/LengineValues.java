@@ -14,6 +14,12 @@ public interface LengineValues extends PsiElement {
   LengineComplexNumber getComplexNumber();
 
   @Nullable
+  LengineDoStmt getDoStmt();
+
+  @Nullable
+  LengineIfStmt getIfStmt();
+
+  @Nullable
   LengineLambdaStmt getLambdaStmt();
 
   @Nullable

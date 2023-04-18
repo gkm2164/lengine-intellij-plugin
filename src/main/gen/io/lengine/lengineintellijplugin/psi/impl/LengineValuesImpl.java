@@ -41,6 +41,18 @@ public class LengineValuesImpl extends ASTWrapperPsiElement implements LengineVa
 
   @Override
   @Nullable
+  public LengineDoStmt getDoStmt() {
+    return findChildByClass(LengineDoStmt.class);
+  }
+
+  @Override
+  @Nullable
+  public LengineIfStmt getIfStmt() {
+    return findChildByClass(LengineIfStmt.class);
+  }
+
+  @Override
+  @Nullable
   public LengineLambdaStmt getLambdaStmt() {
     return findChildByClass(LengineLambdaStmt.class);
   }

@@ -23,6 +23,14 @@ public class LengineVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDoStmt(@NotNull LengineDoStmt o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExportStmt(@NotNull LengineExportStmt o) {
+    visitPsiElement(o);
+  }
+
   public void visitFnStmt(@NotNull LengineFnStmt o) {
     visitPsiElement(o);
   }
@@ -35,7 +43,15 @@ public class LengineVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIfStmt(@NotNull LengineIfStmt o) {
+    visitPsiElement(o);
+  }
+
   public void visitImportStatement(@NotNull LengineImportStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitImportStmt(@NotNull LengineImportStmt o) {
     visitPsiElement(o);
   }
 
@@ -56,6 +72,10 @@ public class LengineVisitor extends PsiElementVisitor {
   }
 
   public void visitModuleStatement(@NotNull LengineModuleStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNativeStmt(@NotNull LengineNativeStmt o) {
     visitPsiElement(o);
   }
 
@@ -88,6 +108,10 @@ public class LengineVisitor extends PsiElementVisitor {
   }
 
   public void visitTryStmt(@NotNull LengineTryStmt o) {
+    visitPsiElement(o);
+  }
+
+  public void visitType(@NotNull LengineType o) {
     visitPsiElement(o);
   }
 

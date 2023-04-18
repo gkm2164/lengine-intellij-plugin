@@ -18,6 +18,7 @@ import com.intellij.psi.TokenType;
 CRLF=\R
 LEFT_PARENTHESIS = "("
 RIGHT_PARENTHESIS = ")"
+LAZY_PARENTHESIS = "#("
 COMPLEX_NUMBER_PARENTHESIS = "#C("
 LAMBDA_PARENTHESIS = "^("
 WHITE_SPACE = [\ \n\t\f]
@@ -25,6 +26,10 @@ END_OF_LINE_COMMENT = ";"[^\r\n]*
 MODULE="module"
 IMPORT="import"
 REQUIRE="require"
+EXPORT="export"
+IMPORT="import"
+NATIVE="native"
+VAR="var"
 FOR="for"
 IN="in"
 DEF="def"
@@ -34,6 +39,9 @@ FN="fn"
 LAMBDA="lambda"
 TRY="try"
 RECOVER="recover"
+DO="do"
+RETURN="return"
+IF="if"
 INTEGER = [0-9]+
 SLASH="/"
 RATIO_NUMBER = {INTEGER}("/"{INTEGER})
@@ -46,6 +54,7 @@ LEFT_BRACKET="["
 RIGHT_BRACKET="]"
 LEFT_BRACE="{"
 RIGHT_BRACE="}"
+SPECIAL_CHARACTER = "#\\"("Backspace"|"Tab"|"Linefeed"|"Page"|"Space"|"Return"|"Rubout")
 CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'&|~0-9]
 
 %state WAITING_VALUE
@@ -70,15 +79,24 @@ CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'&|~0-9]
 <YYINITIAL> {DEF}                                           { yybegin(YYINITIAL); return LengineTypes.DEF; }
 <YYINITIAL> {LAMBDA}                                        { yybegin(YYINITIAL); return LengineTypes.LAMBDA; }
 <YYINITIAL> {TRY}                                           { yybegin(YYINITIAL); return LengineTypes.TRY; }
+<YYINITIAL> {DO}                                           { yybegin(YYINITIAL); return LengineTypes.DO; }
+<YYINITIAL> {RETURN}                                           { yybegin(YYINITIAL); return LengineTypes.RETURN; }
+<YYINITIAL> {IF}                                           { yybegin(YYINITIAL); return LengineTypes.IF; }
 <YYINITIAL> {RECOVER}                                       { yybegin(YYINITIAL); return LengineTypes.RECOVER; }
 <YYINITIAL> {OBJECT_SYMBOL}                                 { yybegin(YYINITIAL); return LengineTypes.OBJECT_SYMBOL; }
-<YYINITIAL> {SYMBOL}                                        { yybegin(YYINITIAL); return LengineTypes.SYMBOL; }
 <YYINITIAL> {COMPLEX_NUMBER_PARENTHESIS}                    { yybegin(YYINITIAL); return LengineTypes.COMPLEX_NUMBER_PARENTHESIS; }
+<YYINITIAL> {LAZY_PARENTHESIS}                              { yybegin(YYINITIAL); return LengineTypes.LAZY_PARENTHESIS; }
 <YYINITIAL> {LAMBDA_PARENTHESIS}                            { yybegin(YYINITIAL); return LengineTypes.LAMBDA_PARENTHESIS; }
 <YYINITIAL> {RATIO_NUMBER}                                  { yybegin(YYINITIAL); return LengineTypes.RATIO_NUMBER; }
 <YYINITIAL> {NUMBER}                                        { yybegin(YYINITIAL); return LengineTypes.NUMBER; }
 <YYINITIAL> {STRING}                                        { yybegin(YYINITIAL); return LengineTypes.STRING; }
+<YYINITIAL> {SPECIAL_CHARACTER}                             { yybegin(YYINITIAL); return LengineTypes.CHARACTER; }
 <YYINITIAL> {CHARACTER}                                     { yybegin(YYINITIAL); return LengineTypes.CHARACTER; }
+<YYINITIAL> {EXPORT}                                        { yybegin(YYINITIAL); return LengineTypes.EXPORT; }
+<YYINITIAL> {IMPORT}                                        { yybegin(YYINITIAL); return LengineTypes.IMPORT; }
+<YYINITIAL> {NATIVE}                                        { yybegin(YYINITIAL); return LengineTypes.NATIVE; }
+<YYINITIAL> {VAR}                                           { yybegin(YYINITIAL); return LengineTypes.VAR; }
+<YYINITIAL> {SYMBOL}                                        { yybegin(YYINITIAL); return LengineTypes.SYMBOL; }
 
 <WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 <WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }

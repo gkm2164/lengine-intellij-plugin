@@ -35,7 +35,14 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
             LengineTypes.FOR,
             LengineTypes.LAMBDA,
             LengineTypes.TRY,
-            LengineTypes.RECOVER -> KEY_KEYS
+            LengineTypes.RECOVER,
+            LengineTypes.EXPORT,
+            LengineTypes.IMPORT,
+            LengineTypes.NATIVE,
+            LengineTypes.DO,
+            LengineTypes.RETURN,
+            LengineTypes.IF,
+            LengineTypes.VAR -> KEY_KEYS
             LengineTypes.STRING, LengineTypes.CHARACTER -> STRING_KEYS
             LengineTypes.FN_SYMBOL -> FN_KEYS
             LengineTypes.DEF_SYMBOL -> FIELD_KEYS
