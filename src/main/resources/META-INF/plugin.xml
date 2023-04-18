@@ -38,11 +38,10 @@
                 language="Lengine"
                 implementationClass="io.lengine.lengineintellijplugin.LengineSyntaxHighlighterFactory"
         />
-        <highlightVisitor
-                implementation="io.lengine.lengineintellijplugin.LengineHighlightVisitor"
-        />
+        <highlightVisitor implementation="io.lengine.lengineintellijplugin.LengineHighlightVisitor" />
         <annotator
             language="Lengine"
             implementationClass="io.lengine.lengineintellijplugin.LengineAnnotator" />
     </extensions>
+
 </idea-plugin>

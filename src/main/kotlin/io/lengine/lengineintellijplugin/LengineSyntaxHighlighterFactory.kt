@@ -1,5 +1,6 @@
 package io.lengine.lengineintellijplugin
 
+import com.intellij.codeInsight.daemon.RainbowVisitor
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory
 import com.intellij.openapi.project.Project
