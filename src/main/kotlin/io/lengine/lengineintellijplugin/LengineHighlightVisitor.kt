@@ -1,49 +1,40 @@
 package io.lengine.lengineintellijplugin
 
-import com.intellij.codeInsight.daemon.RainbowVisitor
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
-import com.intellij.codeInsight.daemon.impl.HighlightInfoType
 import com.intellij.codeInsight.daemon.impl.HighlightVisitor
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightInfoHolder
-import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.util.elementType
 import io.ktor.util.reflect.*
-import io.lengine.lengineintellijplugin.psi.LengineElementType
-import io.lengine.lengineintellijplugin.psi.LengineFnSymbol
 import io.lengine.lengineintellijplugin.psi.LengineTypes
 
-class LengineHighlightVisitor: HighlightVisitor {
+class LengineHighlightVisitor : HighlightVisitor {
     private var infoHolder: HighlightInfoHolder? = null
+    private val variables: MutableSet<String> = mutableSetOf()
 
     override fun suitableForFile(file: PsiFile): Boolean {
         return file.instanceOf(LengineFile::class)
     }
 
     override fun visit(element: PsiElement) {
-        if (element.elementType == LengineTypes.SYMBOL) {
-            if (element.parent.elementType == LengineTypes.FN_SYMBOL) {
-                this.infoHolder?.add(
-                    HighlightInfo
-                        .newHighlightInfo(
-                            HighlightInfoType.HighlightInfoTypeImpl(
-                                HighlightSeverity.INFORMATION,
-                                LengineSyntaxHighlighter.FUNCTION
-                            )
-                        ).range(element).create()
-                )
-            } else if (element.parent.elementType == LengineTypes.DEF_SYMBOL) {
-                this.infoHolder?.add(
-                    HighlightInfo
-                        .newHighlightInfo(
-                            HighlightInfoType.HighlightInfoTypeImpl(
-                                HighlightSeverity.INFORMATION,
-                                LengineSyntaxHighlighter.FIELD
-                            )
-                        ).range(element).create()
-                )
-            }
+        if (LengineSyntaxUtil.isFunctionSymbol(element)) {
+            val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.FN_SYMBOL)
+            val highlightInfo: HighlightInfo? = highlighter(element)
+            this.infoHolder?.add(highlightInfo)
+        } else if (LengineSyntaxUtil.isFunctionLikeSymbol(element)) {
+            val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.FN_SYMBOL)
+            val highlightInfo: HighlightInfo? = highlighter(element)
+            this.infoHolder?.add(highlightInfo)
+        } else if (LengineSyntaxUtil.isVariableSymbol(element)) {
+            val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.DEF_SYMBOL)
+            val highlightInfo: HighlightInfo? = highlighter(element)
+            this.infoHolder?.add(highlightInfo)
+            variables += element.text
+        } else if (LengineSyntaxUtil.isSymbol(element)
+                   && variables.contains(element.text)) {
+            val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.DEF_SYMBOL)
+            val highlightInfo: HighlightInfo? = highlighter(element)
+            this.infoHolder?.add(highlightInfo)
         }
     }
 

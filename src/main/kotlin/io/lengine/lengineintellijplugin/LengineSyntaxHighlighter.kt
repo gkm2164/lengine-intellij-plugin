@@ -40,7 +40,7 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
             LengineTypes.FN_SYMBOL -> FN_KEYS
             LengineTypes.DEF_SYMBOL -> FIELD_KEYS
             LengineTypes.SYMBOL -> IDENTIFIER_KEYS
-            LengineTypes.OBJECT_SYMBOL -> FIELD_KEYS
+            LengineTypes.OBJECT_SYMBOL -> SYMBOL_KEYS
             LengineTypes.COMMENT -> COMMENT_KEYS
             LengineTypes.NUMBER -> NUMBER_KEYS
             LengineTypes.RATIO_NUMBER -> NUMBER_KEYS
@@ -57,6 +57,8 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
             DefaultLanguageHighlighterColors.IDENTIFIER)
         val FIELD = createTextAttributesKey("LENGINE_FIELD",
             DefaultLanguageHighlighterColors.INSTANCE_FIELD)
+        val SYMBOL = createTextAttributesKey("LENGINE_SYMBOL",
+            DefaultLanguageHighlighterColors.PARAMETER)
         val STRING = createTextAttributesKey("LENGINE_STRING",
             DefaultLanguageHighlighterColors.STRING)
         val NUMBER = createTextAttributesKey("LENGINE_NUMBER",
@@ -73,6 +75,7 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
         val BAD_CHAR_KEYS = arrayOf(BAD_CHARACTER)
         val IDENTIFIER_KEYS = arrayOf(IDENTIFIER)
         val FIELD_KEYS = arrayOf(FIELD)
+        val SYMBOL_KEYS = arrayOf(SYMBOL)
         val KEY_KEYS = arrayOf(KEY)
         val STRING_KEYS = arrayOf(STRING)
         val NUMBER_KEYS = arrayOf(NUMBER)
