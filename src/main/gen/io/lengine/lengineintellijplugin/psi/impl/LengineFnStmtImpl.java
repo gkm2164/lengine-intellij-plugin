@@ -35,8 +35,8 @@ public class LengineFnStmtImpl extends ASTWrapperPsiElement implements LengineFn
 
   @Override
   @NotNull
-  public LengineStmt getStmt() {
-    return findNotNullChildByClass(LengineStmt.class);
+  public LengineValues getValues() {
+    return findNotNullChildByClass(LengineValues.class);
   }
 
 }

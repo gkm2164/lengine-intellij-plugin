@@ -11,6 +11,6 @@ public interface LengineDefStmt extends PsiElement {
   LengineDefSymbol getDefSymbol();
 
   @NotNull
-  LengineStmt getStmt();
+  LengineValues getValues();
 
 }

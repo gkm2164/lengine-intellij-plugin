@@ -9,11 +9,13 @@ import io.lengine.lengineintellijplugin.psi.impl.*;
 public interface LengineTypes {
 
   IElementType ARRAY = new LengineElementType("ARRAY");
+  IElementType CLAUSE = new LengineElementType("CLAUSE");
   IElementType COMPLEX_NUMBER = new LengineElementType("COMPLEX_NUMBER");
   IElementType DEF_STMT = new LengineElementType("DEF_STMT");
   IElementType DEF_SYMBOL = new LengineElementType("DEF_SYMBOL");
   IElementType DO_STMT = new LengineElementType("DO_STMT");
   IElementType EXPORT_STMT = new LengineElementType("EXPORT_STMT");
+  IElementType EXPORT_SYMBOL = new LengineElementType("EXPORT_SYMBOL");
   IElementType FN_STMT = new LengineElementType("FN_STMT");
   IElementType FN_SYMBOL = new LengineElementType("FN_SYMBOL");
   IElementType FOR_STMT = new LengineElementType("FOR_STMT");
@@ -79,6 +81,9 @@ public interface LengineTypes {
       if (type == ARRAY) {
         return new LengineArrayImpl(node);
       }
+      else if (type == CLAUSE) {
+        return new LengineClauseImpl(node);
+      }
       else if (type == COMPLEX_NUMBER) {
         return new LengineComplexNumberImpl(node);
       }
@@ -93,6 +98,9 @@ public interface LengineTypes {
       }
       else if (type == EXPORT_STMT) {
         return new LengineExportStmtImpl(node);
+      }
+      else if (type == EXPORT_SYMBOL) {
+        return new LengineExportSymbolImpl(node);
       }
       else if (type == FN_STMT) {
         return new LengineFnStmtImpl(node);

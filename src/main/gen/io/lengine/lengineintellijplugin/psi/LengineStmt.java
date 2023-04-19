@@ -20,21 +20,6 @@ public interface LengineStmt extends PsiElement {
   LengineImportStmt getImportStmt();
 
   @Nullable
-  LengineLetStmt getLetStmt();
-
-  @Nullable
-  LengineLoopStmt getLoopStmt();
-
-  @Nullable
-  LengineNativeStmt getNativeStmt();
-
-  @NotNull
-  List<LengineStmt> getStmtList();
-
-  @Nullable
-  LengineTryStmt getTryStmt();
-
-  @Nullable
   LengineValues getValues();
 
 }

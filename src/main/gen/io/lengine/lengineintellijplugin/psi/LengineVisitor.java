@@ -11,6 +11,10 @@ public class LengineVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitClause(@NotNull LengineClause o) {
+    visitPsiElement(o);
+  }
+
   public void visitComplexNumber(@NotNull LengineComplexNumber o) {
     visitPsiElement(o);
   }
@@ -28,6 +32,10 @@ public class LengineVisitor extends PsiElementVisitor {
   }
 
   public void visitExportStmt(@NotNull LengineExportStmt o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExportSymbol(@NotNull LengineExportSymbol o) {
     visitPsiElement(o);
   }
 

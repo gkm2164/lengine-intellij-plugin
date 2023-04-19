@@ -29,18 +29,21 @@ class LengineSyntaxUtil {
         }
 
         fun isFunctionLikeSymbol(element: PsiElement): Boolean {
-            if (!isVariableSymbol(element)) {
+            if (!isVariableSymbol(element) && !isExportSymbol(element)) {
                 return false
             }
 
-            val siblingNode = element.siblings(
+            val siblingNode = element.parent.siblings(
                 forward = true,
                 withSelf = false
             ).firstOrNull { !it.instanceOf(PsiWhiteSpace::class) } ?: return false
 
-            return (siblingNode.elementType == LengineTypes.STMT
-                    && siblingNode.firstChild.elementType == LengineTypes.VALUES
-                    && siblingNode.firstChild.firstChild.elementType == LengineTypes.LAMBDA_STMT)
+            return (siblingNode.elementType == LengineTypes.VALUES
+                    && siblingNode.firstChild.elementType == LengineTypes.LAMBDA_STMT)
+        }
+
+        private fun isExportSymbol(element: PsiElement): Boolean {
+            return isSymbol(element) && element.parent.elementType == LengineTypes.EXPORT_SYMBOL
         }
 
         fun isVariableSymbol(element: PsiElement): Boolean {

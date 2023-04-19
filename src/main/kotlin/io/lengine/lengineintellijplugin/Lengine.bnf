@@ -28,19 +28,15 @@ import_statement ::= (LEFT_PARENTHESIS IMPORT SYMBOL RIGHT_PARENTHESIS)
 
 require_statement ::= (LEFT_PARENTHESIS REQUIRE STRING RIGHT_PARENTHESIS)
 
-stmt   ::= (LEFT_PARENTHESIS stmt* RIGHT_PARENTHESIS)
-       | (LAZY_PARENTHESIS stmt* RIGHT_PARENTHESIS)
-       | fn_stmt
+stmt   ::= fn_stmt
        | def_stmt
-       | let_stmt
-       | loop_stmt
-       | try_stmt
        | export_stmt
        | import_stmt
-       | native_stmt
        | values
 
-export_stmt ::= (LEFT_PARENTHESIS EXPORT SYMBOL stmt? RIGHT_PARENTHESIS)
+export_stmt ::= (LEFT_PARENTHESIS EXPORT export_symbol values? RIGHT_PARENTHESIS)
+
+export_symbol ::= SYMBOL
 
 import_stmt ::= (LEFT_PARENTHESIS IMPORT SYMBOL RIGHT_PARENTHESIS)
 
@@ -48,42 +44,47 @@ native_stmt ::= (LEFT_PARENTHESIS NATIVE SYMBOL type RIGHT_PARENTHESIS)
 
 type ::= VAR | FN
 
-fn_stmt ::= (LEFT_PARENTHESIS FN fn_symbol LEFT_PARENTHESIS SYMBOL* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS)
+fn_stmt ::= (LEFT_PARENTHESIS FN fn_symbol LEFT_PARENTHESIS SYMBOL* RIGHT_PARENTHESIS values RIGHT_PARENTHESIS)
 
 fn_symbol ::= SYMBOL
 
-def_stmt ::= (LEFT_PARENTHESIS DEF def_symbol stmt RIGHT_PARENTHESIS)
+def_stmt ::= (LEFT_PARENTHESIS DEF def_symbol values RIGHT_PARENTHESIS)
 
 def_symbol ::= SYMBOL
 
-let_stmt ::= ((LEFT_PARENTHESIS | LAZY_PARENTHESIS) LET LEFT_PARENTHESIS let_decl_stmt* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS)
+let_stmt ::= ((LEFT_PARENTHESIS | LAZY_PARENTHESIS) LET LEFT_PARENTHESIS let_decl_stmt* RIGHT_PARENTHESIS values RIGHT_PARENTHESIS)
 
-let_decl_stmt ::= (LEFT_PARENTHESIS SYMBOL stmt RIGHT_PARENTHESIS)
+let_decl_stmt ::= (LEFT_PARENTHESIS SYMBOL values RIGHT_PARENTHESIS)
 
-loop_stmt ::= (LEFT_PARENTHESIS LOOP for_stmt* stmt RIGHT_PARENTHESIS)
+loop_stmt ::= (LEFT_PARENTHESIS LOOP for_stmt* values RIGHT_PARENTHESIS)
 
-for_stmt ::= FOR SYMBOL IN stmt
+for_stmt ::= FOR SYMBOL IN values
 
-try_stmt ::= (LEFT_PARENTHESIS TRY stmt recover_stmt RIGHT_PARENTHESIS)
+try_stmt ::= (LEFT_PARENTHESIS TRY values recover_stmt RIGHT_PARENTHESIS)
 
-recover_stmt ::= (LEFT_PARENTHESIS RECOVER SYMBOL stmt RIGHT_PARENTHESIS)
+recover_stmt ::= (LEFT_PARENTHESIS RECOVER SYMBOL values RIGHT_PARENTHESIS)
 
 values ::= SYMBOL
+        |  OBJECT_SYMBOL
+        |  STRING
+        |  CHARACTER
         |  array
         |  numbers_value
         |  complex_number
-        |  OBJECT_SYMBOL
         |  lambda_stmt
-        |  STRING
-        |  CHARACTER
         |  object_value
         |  do_stmt
         |  if_stmt
+        |  let_stmt
+        |  loop_stmt
+        |  try_stmt
+        |  native_stmt
+        |  clause
 
-array  ::= LEFT_BRACKET stmt* RIGHT_BRACKET
+array  ::= LEFT_BRACKET values* RIGHT_BRACKET
 
-lambda_stmt ::= LAMBDA_PARENTHESIS LEFT_PARENTHESIS SYMBOL* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
-             |  LEFT_PARENTHESIS LAMBDA LEFT_PARENTHESIS SYMBOL* RIGHT_PARENTHESIS stmt RIGHT_PARENTHESIS
+lambda_stmt ::= LAMBDA_PARENTHESIS LEFT_PARENTHESIS SYMBOL* RIGHT_PARENTHESIS values RIGHT_PARENTHESIS
+             |  LEFT_PARENTHESIS LAMBDA LEFT_PARENTHESIS SYMBOL* RIGHT_PARENTHESIS values RIGHT_PARENTHESIS
 
 numbers_value ::= NUMBER
                |  RATIO_NUMBER
@@ -94,6 +95,9 @@ object_value_entry ::= OBJECT_SYMBOL values
 
 complex_number ::= COMPLEX_NUMBER_PARENTHESIS numbers_value numbers_value RIGHT_PARENTHESIS
 
-do_stmt ::= (LEFT_PARENTHESIS DO stmt* RETURN stmt RIGHT_PARENTHESIS)
+do_stmt ::= (LEFT_PARENTHESIS DO values* RETURN values RIGHT_PARENTHESIS)
 
-if_stmt ::= (LEFT_PARENTHESIS IF stmt stmt stmt RIGHT_PARENTHESIS)
+if_stmt ::= (LEFT_PARENTHESIS IF values values values RIGHT_PARENTHESIS)
+
+clause  ::= (LEFT_PARENTHESIS values* RIGHT_PARENTHESIS)
+        |   (LAZY_PARENTHESIS values* RIGHT_PARENTHESIS)

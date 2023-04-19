@@ -11,6 +11,6 @@ public interface LengineTryStmt extends PsiElement {
   LengineRecoverStmt getRecoverStmt();
 
   @NotNull
-  LengineStmt getStmt();
+  LengineValues getValues();
 
 }

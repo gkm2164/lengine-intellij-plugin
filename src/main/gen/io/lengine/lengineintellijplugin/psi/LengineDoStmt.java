@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface LengineDoStmt extends PsiElement {
 
   @NotNull
-  List<LengineStmt> getStmtList();
+  List<LengineValues> getValuesList();
 
 }

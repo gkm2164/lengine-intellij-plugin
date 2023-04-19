@@ -35,8 +35,8 @@ public class LengineLoopStmtImpl extends ASTWrapperPsiElement implements Lengine
 
   @Override
   @NotNull
-  public LengineStmt getStmt() {
-    return findNotNullChildByClass(LengineStmt.class);
+  public LengineValues getValues() {
+    return findNotNullChildByClass(LengineValues.class);
   }
 
 }

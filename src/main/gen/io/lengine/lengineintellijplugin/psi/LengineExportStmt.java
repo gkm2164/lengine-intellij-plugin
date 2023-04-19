@@ -7,7 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface LengineExportStmt extends PsiElement {
 
+  @NotNull
+  LengineExportSymbol getExportSymbol();
+
   @Nullable
-  LengineStmt getStmt();
+  LengineValues getValues();
 
 }

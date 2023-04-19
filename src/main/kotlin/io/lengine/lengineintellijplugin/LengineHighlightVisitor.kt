@@ -10,7 +10,6 @@ import io.lengine.lengineintellijplugin.psi.LengineTypes
 
 class LengineHighlightVisitor : HighlightVisitor {
     private var infoHolder: HighlightInfoHolder? = null
-    private val variables: MutableSet<String> = mutableSetOf()
 
     override fun suitableForFile(file: PsiFile): Boolean {
         return file.instanceOf(LengineFile::class)
@@ -26,12 +25,6 @@ class LengineHighlightVisitor : HighlightVisitor {
             val highlightInfo: HighlightInfo? = highlighter(element)
             this.infoHolder?.add(highlightInfo)
         } else if (LengineSyntaxUtil.isVariableSymbol(element)) {
-            val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.DEF_SYMBOL)
-            val highlightInfo: HighlightInfo? = highlighter(element)
-            this.infoHolder?.add(highlightInfo)
-            variables += element.text
-        } else if (LengineSyntaxUtil.isSymbol(element)
-                   && variables.contains(element.text)) {
             val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.DEF_SYMBOL)
             val highlightInfo: HighlightInfo? = highlighter(element)
             this.infoHolder?.add(highlightInfo)

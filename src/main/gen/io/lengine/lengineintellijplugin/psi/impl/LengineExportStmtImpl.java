@@ -28,9 +28,15 @@ public class LengineExportStmtImpl extends ASTWrapperPsiElement implements Lengi
   }
 
   @Override
+  @NotNull
+  public LengineExportSymbol getExportSymbol() {
+    return findNotNullChildByClass(LengineExportSymbol.class);
+  }
+
+  @Override
   @Nullable
-  public LengineStmt getStmt() {
-    return findChildByClass(LengineStmt.class);
+  public LengineValues getValues() {
+    return findChildByClass(LengineValues.class);
   }
 
 }

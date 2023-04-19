@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LengineIfStmt extends PsiElement {
-
-  @NotNull
-  List<LengineValues> getValuesList();
+public interface LengineExportSymbol extends PsiElement {
 
 }

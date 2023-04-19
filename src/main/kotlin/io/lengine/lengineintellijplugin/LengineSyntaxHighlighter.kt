@@ -65,7 +65,7 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
         val FIELD = createTextAttributesKey("LENGINE_FIELD",
             DefaultLanguageHighlighterColors.INSTANCE_FIELD)
         val SYMBOL = createTextAttributesKey("LENGINE_SYMBOL",
-            DefaultLanguageHighlighterColors.PARAMETER)
+            DefaultLanguageHighlighterColors.METADATA)
         val STRING = createTextAttributesKey("LENGINE_STRING",
             DefaultLanguageHighlighterColors.STRING)
         val NUMBER = createTextAttributesKey("LENGINE_NUMBER",

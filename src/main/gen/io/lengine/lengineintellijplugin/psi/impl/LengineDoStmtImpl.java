@@ -29,8 +29,8 @@ public class LengineDoStmtImpl extends ASTWrapperPsiElement implements LengineDo
 
   @Override
   @NotNull
-  public List<LengineStmt> getStmtList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, LengineStmt.class);
+  public List<LengineValues> getValuesList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LengineValues.class);
   }
 
 }

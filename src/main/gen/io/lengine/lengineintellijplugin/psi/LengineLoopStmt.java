@@ -11,6 +11,6 @@ public interface LengineLoopStmt extends PsiElement {
   List<LengineForStmt> getForStmtList();
 
   @NotNull
-  LengineStmt getStmt();
+  LengineValues getValues();
 
 }

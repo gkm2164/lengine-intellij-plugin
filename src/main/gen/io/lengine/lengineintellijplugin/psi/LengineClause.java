@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LengineIfStmt extends PsiElement {
+public interface LengineClause extends PsiElement {
 
   @NotNull
   List<LengineValues> getValuesList();

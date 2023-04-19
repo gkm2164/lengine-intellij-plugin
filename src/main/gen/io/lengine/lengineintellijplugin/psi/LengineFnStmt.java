@@ -11,6 +11,6 @@ public interface LengineFnStmt extends PsiElement {
   LengineFnSymbol getFnSymbol();
 
   @NotNull
-  LengineStmt getStmt();
+  LengineValues getValues();
 
 }

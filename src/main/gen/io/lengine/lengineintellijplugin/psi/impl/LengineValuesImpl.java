@@ -35,6 +35,12 @@ public class LengineValuesImpl extends ASTWrapperPsiElement implements LengineVa
 
   @Override
   @Nullable
+  public LengineClause getClause() {
+    return findChildByClass(LengineClause.class);
+  }
+
+  @Override
+  @Nullable
   public LengineComplexNumber getComplexNumber() {
     return findChildByClass(LengineComplexNumber.class);
   }
@@ -59,6 +65,24 @@ public class LengineValuesImpl extends ASTWrapperPsiElement implements LengineVa
 
   @Override
   @Nullable
+  public LengineLetStmt getLetStmt() {
+    return findChildByClass(LengineLetStmt.class);
+  }
+
+  @Override
+  @Nullable
+  public LengineLoopStmt getLoopStmt() {
+    return findChildByClass(LengineLoopStmt.class);
+  }
+
+  @Override
+  @Nullable
+  public LengineNativeStmt getNativeStmt() {
+    return findChildByClass(LengineNativeStmt.class);
+  }
+
+  @Override
+  @Nullable
   public LengineNumbersValue getNumbersValue() {
     return findChildByClass(LengineNumbersValue.class);
   }
@@ -67,6 +91,12 @@ public class LengineValuesImpl extends ASTWrapperPsiElement implements LengineVa
   @Nullable
   public LengineObjectValue getObjectValue() {
     return findChildByClass(LengineObjectValue.class);
+  }
+
+  @Override
+  @Nullable
+  public LengineTryStmt getTryStmt() {
+    return findChildByClass(LengineTryStmt.class);
   }
 
 }

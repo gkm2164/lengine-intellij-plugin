@@ -53,36 +53,6 @@ public class LengineStmtImpl extends ASTWrapperPsiElement implements LengineStmt
 
   @Override
   @Nullable
-  public LengineLetStmt getLetStmt() {
-    return findChildByClass(LengineLetStmt.class);
-  }
-
-  @Override
-  @Nullable
-  public LengineLoopStmt getLoopStmt() {
-    return findChildByClass(LengineLoopStmt.class);
-  }
-
-  @Override
-  @Nullable
-  public LengineNativeStmt getNativeStmt() {
-    return findChildByClass(LengineNativeStmt.class);
-  }
-
-  @Override
-  @NotNull
-  public List<LengineStmt> getStmtList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, LengineStmt.class);
-  }
-
-  @Override
-  @Nullable
-  public LengineTryStmt getTryStmt() {
-    return findChildByClass(LengineTryStmt.class);
-  }
-
-  @Override
-  @Nullable
   public LengineValues getValues() {
     return findChildByClass(LengineValues.class);
   }

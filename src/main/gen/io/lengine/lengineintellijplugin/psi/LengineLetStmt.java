@@ -11,6 +11,6 @@ public interface LengineLetStmt extends PsiElement {
   List<LengineLetDeclStmt> getLetDeclStmtList();
 
   @NotNull
-  LengineStmt getStmt();
+  LengineValues getValues();
 
 }

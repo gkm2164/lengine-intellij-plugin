@@ -11,6 +11,9 @@ public interface LengineValues extends PsiElement {
   LengineArray getArray();
 
   @Nullable
+  LengineClause getClause();
+
+  @Nullable
   LengineComplexNumber getComplexNumber();
 
   @Nullable
@@ -23,9 +26,21 @@ public interface LengineValues extends PsiElement {
   LengineLambdaStmt getLambdaStmt();
 
   @Nullable
+  LengineLetStmt getLetStmt();
+
+  @Nullable
+  LengineLoopStmt getLoopStmt();
+
+  @Nullable
+  LengineNativeStmt getNativeStmt();
+
+  @Nullable
   LengineNumbersValue getNumbersValue();
 
   @Nullable
   LengineObjectValue getObjectValue();
+
+  @Nullable
+  LengineTryStmt getTryStmt();
 
 }

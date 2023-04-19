@@ -29,8 +29,8 @@ public class LengineLetDeclStmtImpl extends ASTWrapperPsiElement implements Leng
 
   @Override
   @NotNull
-  public LengineStmt getStmt() {
-    return findNotNullChildByClass(LengineStmt.class);
+  public LengineValues getValues() {
+    return findNotNullChildByClass(LengineValues.class);
   }
 
 }
