@@ -31,6 +31,8 @@ IMPORT="import"
 NATIVE="native"
 VAR="var"
 FOR="for"
+WHEN="when"
+OTHERWISE="otherwise"
 IN="in"
 DEF="def"
 LET="let"
@@ -74,14 +76,16 @@ CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'&|~0-9]
 <YYINITIAL> {FN}                                            { yybegin(YYINITIAL); return LengineTypes.FN; }
 <YYINITIAL> {LOOP}                                          { yybegin(YYINITIAL); return LengineTypes.LOOP; }
 <YYINITIAL> {FOR}                                           { yybegin(YYINITIAL); return LengineTypes.FOR; }
+<YYINITIAL> {WHEN}                                          { yybegin(YYINITIAL); return LengineTypes.WHEN; }
+<YYINITIAL> {OTHERWISE}                                     { yybegin(YYINITIAL); return LengineTypes.OTHERWISE; }
 <YYINITIAL> {IN}                                            { yybegin(YYINITIAL); return LengineTypes.IN; }
 <YYINITIAL> {LET}                                           { yybegin(YYINITIAL); return LengineTypes.LET; }
 <YYINITIAL> {DEF}                                           { yybegin(YYINITIAL); return LengineTypes.DEF; }
 <YYINITIAL> {LAMBDA}                                        { yybegin(YYINITIAL); return LengineTypes.LAMBDA; }
 <YYINITIAL> {TRY}                                           { yybegin(YYINITIAL); return LengineTypes.TRY; }
-<YYINITIAL> {DO}                                           { yybegin(YYINITIAL); return LengineTypes.DO; }
-<YYINITIAL> {RETURN}                                           { yybegin(YYINITIAL); return LengineTypes.RETURN; }
-<YYINITIAL> {IF}                                           { yybegin(YYINITIAL); return LengineTypes.IF; }
+<YYINITIAL> {DO}                                            { yybegin(YYINITIAL); return LengineTypes.DO; }
+<YYINITIAL> {RETURN}                                        { yybegin(YYINITIAL); return LengineTypes.RETURN; }
+<YYINITIAL> {IF}                                            { yybegin(YYINITIAL); return LengineTypes.IF; }
 <YYINITIAL> {RECOVER}                                       { yybegin(YYINITIAL); return LengineTypes.RECOVER; }
 <YYINITIAL> {OBJECT_SYMBOL}                                 { yybegin(YYINITIAL); return LengineTypes.OBJECT_SYMBOL; }
 <YYINITIAL> {COMPLEX_NUMBER_PARENTHESIS}                    { yybegin(YYINITIAL); return LengineTypes.COMPLEX_NUMBER_PARENTHESIS; }

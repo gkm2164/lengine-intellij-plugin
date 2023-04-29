@@ -19,6 +19,7 @@ public interface LengineTypes {
   IElementType FN_STMT = new LengineElementType("FN_STMT");
   IElementType FN_SYMBOL = new LengineElementType("FN_SYMBOL");
   IElementType FOR_STMT = new LengineElementType("FOR_STMT");
+  IElementType FOR_WHEN_STMT = new LengineElementType("FOR_WHEN_STMT");
   IElementType IF_STMT = new LengineElementType("IF_STMT");
   IElementType IMPORT_STATEMENT = new LengineElementType("IMPORT_STATEMENT");
   IElementType IMPORT_STMT = new LengineElementType("IMPORT_STMT");
@@ -63,6 +64,7 @@ public interface LengineTypes {
   IElementType NATIVE = new LengineTokenType("NATIVE");
   IElementType NUMBER = new LengineTokenType("NUMBER");
   IElementType OBJECT_SYMBOL = new LengineTokenType("OBJECT_SYMBOL");
+  IElementType OTHERWISE = new LengineTokenType("OTHERWISE");
   IElementType RATIO_NUMBER = new LengineTokenType("RATIO_NUMBER");
   IElementType RECOVER = new LengineTokenType("RECOVER");
   IElementType REQUIRE = new LengineTokenType("REQUIRE");
@@ -74,6 +76,7 @@ public interface LengineTypes {
   IElementType SYMBOL = new LengineTokenType("SYMBOL");
   IElementType TRY = new LengineTokenType("TRY");
   IElementType VAR = new LengineTokenType("VAR");
+  IElementType WHEN = new LengineTokenType("WHEN");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -110,6 +113,9 @@ public interface LengineTypes {
       }
       else if (type == FOR_STMT) {
         return new LengineForStmtImpl(node);
+      }
+      else if (type == FOR_WHEN_STMT) {
+        return new LengineForWhenStmtImpl(node);
       }
       else if (type == IF_STMT) {
         return new LengineIfStmtImpl(node);

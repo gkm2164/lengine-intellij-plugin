@@ -51,6 +51,10 @@ public class LengineVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitForWhenStmt(@NotNull LengineForWhenStmt o) {
+    visitPsiElement(o);
+  }
+
   public void visitIfStmt(@NotNull LengineIfStmt o) {
     visitPsiElement(o);
   }

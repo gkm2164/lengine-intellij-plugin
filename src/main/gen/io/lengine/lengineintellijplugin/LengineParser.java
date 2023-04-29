@@ -278,6 +278,48 @@ public class LengineParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // LEFT_PARENTHESIS FOR values WHEN (LEFT_PARENTHESIS values values RIGHT_PARENTHESIS)* OTHERWISE values RIGHT_PARENTHESIS
+  public static boolean for_when_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_when_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, FOR);
+    r = r && values(b, l + 1);
+    r = r && consumeToken(b, WHEN);
+    r = r && for_when_stmt_4(b, l + 1);
+    r = r && consumeToken(b, OTHERWISE);
+    r = r && values(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, FOR_WHEN_STMT, r);
+    return r;
+  }
+
+  // (LEFT_PARENTHESIS values values RIGHT_PARENTHESIS)*
+  private static boolean for_when_stmt_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_when_stmt_4")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!for_when_stmt_4_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "for_when_stmt_4", c)) break;
+    }
+    return true;
+  }
+
+  // LEFT_PARENTHESIS values values RIGHT_PARENTHESIS
+  private static boolean for_when_stmt_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "for_when_stmt_4_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LEFT_PARENTHESIS);
+    r = r && values(b, l + 1);
+    r = r && values(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // LEFT_PARENTHESIS IF values values values RIGHT_PARENTHESIS
   public static boolean if_stmt(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "if_stmt")) return false;
@@ -665,6 +707,7 @@ public class LengineParser implements PsiParser, LightPsiParser {
   //         |  loop_stmt
   //         |  try_stmt
   //         |  native_stmt
+  //         |  for_when_stmt
   //         |  clause
   public static boolean values(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "values")) return false;
@@ -685,6 +728,7 @@ public class LengineParser implements PsiParser, LightPsiParser {
     if (!r) r = loop_stmt(b, l + 1);
     if (!r) r = try_stmt(b, l + 1);
     if (!r) r = native_stmt(b, l + 1);
+    if (!r) r = for_when_stmt(b, l + 1);
     if (!r) r = clause(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;

@@ -20,6 +20,9 @@ public interface LengineValues extends PsiElement {
   LengineDoStmt getDoStmt();
 
   @Nullable
+  LengineForWhenStmt getForWhenStmt();
+
+  @Nullable
   LengineIfStmt getIfStmt();
 
   @Nullable
