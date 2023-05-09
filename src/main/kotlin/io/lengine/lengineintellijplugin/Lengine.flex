@@ -51,16 +51,18 @@ NUMBER = {INTEGER}(\.{INTEGER})?
 OBJECT_SYMBOL=":"([$.a-zA-Z_\-+/*%<>=?:'&|~][$.a-zA-Z0-9_\-+/*%<>=?:'&|~]*\*?)
 SYMBOL=([$.a-zA-Z_\-+/*%<>=?:'&|~][$.a-zA-Z0-9_\-+/*%<>=?:'&|~]*\*?)
 DOUBLE_QUOTE=\"
-STRING={DOUBLE_QUOTE}[^\"]*{DOUBLE_QUOTE}
 LEFT_BRACKET="["
 RIGHT_BRACKET="]"
 LEFT_BRACE="{"
 RIGHT_BRACE="}"
 SPECIAL_CHARACTER = "#\\"("Backspace"|"Tab"|"Linefeed"|"Page"|"Space"|"Return"|"Rubout")
-CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'&|~0-9]
+CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'\"&|~0-9{}(),\[\]]
+ESCAPE=\
+ANY_CHAR=.
 
 %state WAITING_VALUE
 %state STRING_VALUE
+%state STRING_ESCAPE
 %%
 
 <YYINITIAL> {LEFT_PARENTHESIS}                              { yybegin(YYINITIAL); return LengineTypes.LEFT_PARENTHESIS; }
@@ -93,7 +95,7 @@ CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'&|~0-9]
 <YYINITIAL> {LAMBDA_PARENTHESIS}                            { yybegin(YYINITIAL); return LengineTypes.LAMBDA_PARENTHESIS; }
 <YYINITIAL> {RATIO_NUMBER}                                  { yybegin(YYINITIAL); return LengineTypes.RATIO_NUMBER; }
 <YYINITIAL> {NUMBER}                                        { yybegin(YYINITIAL); return LengineTypes.NUMBER; }
-<YYINITIAL> {STRING}                                        { yybegin(YYINITIAL); return LengineTypes.STRING; }
+<YYINITIAL> {DOUBLE_QUOTE}                                  { yybegin(STRING_VALUE); return LengineTypes.STRING_CONT; }
 <YYINITIAL> {SPECIAL_CHARACTER}                             { yybegin(YYINITIAL); return LengineTypes.CHARACTER; }
 <YYINITIAL> {CHARACTER}                                     { yybegin(YYINITIAL); return LengineTypes.CHARACTER; }
 <YYINITIAL> {EXPORT}                                        { yybegin(YYINITIAL); return LengineTypes.EXPORT; }
@@ -105,6 +107,11 @@ CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'&|~0-9]
 <WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 <WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
+<STRING_VALUE>  {ESCAPE}                                     { yybegin(STRING_ESCAPE); return LengineTypes.STRING_CONT; }
+<STRING_VALUE>  {DOUBLE_QUOTE}                               { yybegin(YYINITIAL); return LengineTypes.STRING; }
+<STRING_VALUE>  {ANY_CHAR}                                   { yybegin(STRING_VALUE); return LengineTypes.STRING_CONT; }
+
+<STRING_ESCAPE> {ANY_CHAR}                                   { yybegin(STRING_VALUE); return LengineTypes.STRING_CONT; }
 
 ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 

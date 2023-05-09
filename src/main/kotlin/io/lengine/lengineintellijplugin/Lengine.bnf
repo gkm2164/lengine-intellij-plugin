@@ -26,7 +26,7 @@ module_statement ::= (LEFT_PARENTHESIS MODULE SYMBOL RIGHT_PARENTHESIS)
 
 import_statement ::= (LEFT_PARENTHESIS IMPORT SYMBOL RIGHT_PARENTHESIS)
 
-require_statement ::= (LEFT_PARENTHESIS REQUIRE STRING RIGHT_PARENTHESIS)
+require_statement ::= (LEFT_PARENTHESIS REQUIRE values RIGHT_PARENTHESIS)
 
 stmt   ::= fn_stmt
        | def_stmt
@@ -66,7 +66,7 @@ recover_stmt ::= (LEFT_PARENTHESIS RECOVER SYMBOL values RIGHT_PARENTHESIS)
 
 values ::= SYMBOL
         |  OBJECT_SYMBOL
-        |  STRING
+        |  string_value
         |  CHARACTER
         |  array
         |  numbers_value
@@ -104,3 +104,5 @@ clause  ::= (LEFT_PARENTHESIS values* RIGHT_PARENTHESIS)
         |   (LAZY_PARENTHESIS values* RIGHT_PARENTHESIS)
 
 for_when_stmt ::= (LEFT_PARENTHESIS FOR values WHEN (LEFT_PARENTHESIS values values RIGHT_PARENTHESIS)* OTHERWISE values RIGHT_PARENTHESIS)
+
+string_value ::= STRING_CONT* STRING

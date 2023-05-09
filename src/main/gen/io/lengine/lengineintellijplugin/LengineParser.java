@@ -616,13 +616,15 @@ public class LengineParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LEFT_PARENTHESIS REQUIRE STRING RIGHT_PARENTHESIS
+  // LEFT_PARENTHESIS REQUIRE values RIGHT_PARENTHESIS
   public static boolean require_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "require_statement")) return false;
     if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, LEFT_PARENTHESIS, REQUIRE, STRING, RIGHT_PARENTHESIS);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, REQUIRE);
+    r = r && values(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
     exit_section_(b, m, REQUIRE_STATEMENT, r);
     return r;
   }
@@ -664,6 +666,30 @@ public class LengineParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // STRING_CONT* STRING
+  public static boolean string_value(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "string_value")) return false;
+    if (!nextTokenIs(b, "<string value>", STRING, STRING_CONT)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STRING_VALUE, "<string value>");
+    r = string_value_0(b, l + 1);
+    r = r && consumeToken(b, STRING);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // STRING_CONT*
+  private static boolean string_value_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "string_value_0")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, STRING_CONT)) break;
+      if (!empty_element_parsed_guard_(b, "string_value_0", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
   // LEFT_PARENTHESIS TRY values recover_stmt RIGHT_PARENTHESIS
   public static boolean try_stmt(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "try_stmt")) return false;
@@ -694,7 +720,7 @@ public class LengineParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // SYMBOL
   //         |  OBJECT_SYMBOL
-  //         |  STRING
+  //         |  string_value
   //         |  CHARACTER
   //         |  array
   //         |  numbers_value
@@ -715,7 +741,7 @@ public class LengineParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, VALUES, "<values>");
     r = consumeToken(b, SYMBOL);
     if (!r) r = consumeToken(b, OBJECT_SYMBOL);
-    if (!r) r = consumeToken(b, STRING);
+    if (!r) r = string_value(b, l + 1);
     if (!r) r = consumeToken(b, CHARACTER);
     if (!r) r = array(b, l + 1);
     if (!r) r = numbers_value(b, l + 1);

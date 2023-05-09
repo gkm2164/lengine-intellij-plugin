@@ -36,6 +36,7 @@ public interface LengineTypes {
   IElementType REQUIRE_STATEMENT = new LengineElementType("REQUIRE_STATEMENT");
   IElementType STATEMENT = new LengineElementType("STATEMENT");
   IElementType STMT = new LengineElementType("STMT");
+  IElementType STRING_VALUE = new LengineElementType("STRING_VALUE");
   IElementType TRY_STMT = new LengineElementType("TRY_STMT");
   IElementType TYPE = new LengineElementType("TYPE");
   IElementType VALUES = new LengineElementType("VALUES");
@@ -73,6 +74,7 @@ public interface LengineTypes {
   IElementType RIGHT_BRACKET = new LengineTokenType("RIGHT_BRACKET");
   IElementType RIGHT_PARENTHESIS = new LengineTokenType("RIGHT_PARENTHESIS");
   IElementType STRING = new LengineTokenType("STRING");
+  IElementType STRING_CONT = new LengineTokenType("STRING_CONT");
   IElementType SYMBOL = new LengineTokenType("SYMBOL");
   IElementType TRY = new LengineTokenType("TRY");
   IElementType VAR = new LengineTokenType("VAR");
@@ -164,6 +166,9 @@ public interface LengineTypes {
       }
       else if (type == STMT) {
         return new LengineStmtImpl(node);
+      }
+      else if (type == STRING_VALUE) {
+        return new LengineStringValueImpl(node);
       }
       else if (type == TRY_STMT) {
         return new LengineTryStmtImpl(node);

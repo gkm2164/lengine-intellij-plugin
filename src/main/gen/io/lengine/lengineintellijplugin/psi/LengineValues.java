@@ -44,6 +44,9 @@ public interface LengineValues extends PsiElement {
   LengineObjectValue getObjectValue();
 
   @Nullable
+  LengineStringValue getStringValue();
+
+  @Nullable
   LengineTryStmt getTryStmt();
 
 }

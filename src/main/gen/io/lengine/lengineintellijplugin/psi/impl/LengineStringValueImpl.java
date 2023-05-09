@@ -11,26 +11,20 @@ import static io.lengine.lengineintellijplugin.psi.LengineTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.lengine.lengineintellijplugin.psi.*;
 
-public class LengineRequireStatementImpl extends ASTWrapperPsiElement implements LengineRequireStatement {
+public class LengineStringValueImpl extends ASTWrapperPsiElement implements LengineStringValue {
 
-  public LengineRequireStatementImpl(@NotNull ASTNode node) {
+  public LengineStringValueImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull LengineVisitor visitor) {
-    visitor.visitRequireStatement(this);
+    visitor.visitStringValue(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof LengineVisitor) accept((LengineVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public LengineValues getValues() {
-    return findNotNullChildByClass(LengineValues.class);
   }
 
 }
