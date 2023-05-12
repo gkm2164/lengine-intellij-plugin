@@ -10,7 +10,6 @@ import com.intellij.psi.util.elementType
 import com.intellij.psi.util.siblings
 import io.ktor.util.reflect.*
 import io.lengine.lengineintellijplugin.psi.LengineTypes
-import io.lengine.lengineintellijplugin.psi.impl.LengineStmtImpl
 
 class LengineSyntaxUtil {
     companion object {
@@ -46,6 +45,27 @@ class LengineSyntaxUtil {
             return isSymbol(element) && element.parent.elementType == LengineTypes.EXPORT_SYMBOL
         }
 
+        fun isNativeFunction(element: PsiElement): Boolean {
+            if (!isVariableSymbol(element) && !isExportSymbol(element)) {
+                return false
+            }
+
+            val siblingNode = element.parent.siblings(
+                forward = true,
+                withSelf = false
+            ).firstOrNull { !it.instanceOf(PsiWhiteSpace::class) } ?: return false
+
+            return (siblingNode.elementType == LengineTypes.VALUES
+                    && siblingNode.firstChild.elementType == LengineTypes.NATIVE_STMT
+                    && isNativeFn(siblingNode.firstChild))
+        }
+
+        private fun isNativeFn(nativeStmt: PsiElement): Boolean {
+            return nativeStmt.children
+                .last()
+                .text == "fn"
+        }
+
         fun isVariableSymbol(element: PsiElement): Boolean {
             return isSymbol(element) && isDefSymbol(element.parent)
         }
@@ -66,6 +86,5 @@ class LengineSyntaxUtil {
                     ).range(element).create()
             }
         }
-
     }
 }

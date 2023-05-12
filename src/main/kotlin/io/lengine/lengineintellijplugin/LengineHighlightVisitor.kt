@@ -24,6 +24,10 @@ class LengineHighlightVisitor : HighlightVisitor {
             val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.FN_SYMBOL)
             val highlightInfo: HighlightInfo? = highlighter(element)
             this.infoHolder?.add(highlightInfo)
+        } else if (LengineSyntaxUtil.isNativeFunction(element)) {
+            val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.FN_SYMBOL)
+            val highlightInfo: HighlightInfo? = highlighter(element)
+            this.infoHolder?.add(highlightInfo)
         } else if (LengineSyntaxUtil.isVariableSymbol(element)) {
             val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.DEF_SYMBOL)
             val highlightInfo: HighlightInfo? = highlighter(element)

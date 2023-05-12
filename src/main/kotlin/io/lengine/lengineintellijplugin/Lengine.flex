@@ -57,6 +57,7 @@ LEFT_BRACE="{"
 RIGHT_BRACE="}"
 SPECIAL_CHARACTER = "#\\"("Backspace"|"Tab"|"Linefeed"|"Page"|"Space"|"Return"|"Rubout")
 CHARACTER = "#\\"[$.a-zA-Z_\-+/*%<>=?:'\"&|~0-9{}(),\[\]]
+SPECIAL_NUMBERS = "#"[0-9]+r[0-9a-zA-Z]+
 ESCAPE=\
 ANY_CHAR=.
 
@@ -95,6 +96,7 @@ ANY_CHAR=.
 <YYINITIAL> {LAMBDA_PARENTHESIS}                            { yybegin(YYINITIAL); return LengineTypes.LAMBDA_PARENTHESIS; }
 <YYINITIAL> {RATIO_NUMBER}                                  { yybegin(YYINITIAL); return LengineTypes.RATIO_NUMBER; }
 <YYINITIAL> {NUMBER}                                        { yybegin(YYINITIAL); return LengineTypes.NUMBER; }
+<YYINITIAL> {SPECIAL_NUMBERS}                               { yybegin(YYINITIAL); return LengineTypes.NUMBER; }
 <YYINITIAL> {DOUBLE_QUOTE}                                  { yybegin(STRING_VALUE); return LengineTypes.STRING_CONT; }
 <YYINITIAL> {SPECIAL_CHARACTER}                             { yybegin(YYINITIAL); return LengineTypes.CHARACTER; }
 <YYINITIAL> {CHARACTER}                                     { yybegin(YYINITIAL); return LengineTypes.CHARACTER; }
