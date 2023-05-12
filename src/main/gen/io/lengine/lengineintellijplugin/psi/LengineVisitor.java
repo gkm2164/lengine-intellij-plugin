@@ -11,11 +11,19 @@ public class LengineVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitCaseStmt(@NotNull LengineCaseStmt o) {
+    visitPsiElement(o);
+  }
+
   public void visitClause(@NotNull LengineClause o) {
     visitPsiElement(o);
   }
 
   public void visitComplexNumber(@NotNull LengineComplexNumber o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCondStmt(@NotNull LengineCondStmt o) {
     visitPsiElement(o);
   }
 

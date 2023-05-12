@@ -23,6 +23,8 @@ COMPLEX_NUMBER_PARENTHESIS = "#C("
 LAMBDA_PARENTHESIS = "^("
 WHITE_SPACE = [\ \n\t\f]
 END_OF_LINE_COMMENT = ";"[^\r\n]*
+CASE="case"
+DEFAULT="default"
 MODULE="module"
 IMPORT="import"
 REQUIRE="require"
@@ -44,6 +46,8 @@ RECOVER="recover"
 DO="do"
 RETURN="return"
 IF="if"
+TRUE="true"
+FALSE="false"
 INTEGER = [0-9]+
 SLASH="/"
 RATIO_NUMBER = {INTEGER}("/"{INTEGER})
@@ -73,6 +77,10 @@ ANY_CHAR=.
 <YYINITIAL> {LEFT_BRACE}                                    { yybegin(YYINITIAL); return LengineTypes.LEFT_BRACE; }
 <YYINITIAL> {RIGHT_BRACE}                                   { yybegin(YYINITIAL); return LengineTypes.RIGHT_BRACE; }
 <YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return LengineTypes.COMMENT; }
+<YYINITIAL> {TRUE}                                          { yybegin(YYINITIAL); return LengineTypes.TRUE; }
+<YYINITIAL> {FALSE}                                         { yybegin(YYINITIAL); return LengineTypes.FALSE; }
+<YYINITIAL> {CASE}                                          { yybegin(YYINITIAL); return LengineTypes.CASE; }
+<YYINITIAL> {DEFAULT}                                       { yybegin(YYINITIAL); return LengineTypes.DEFAULT; }
 <YYINITIAL> {MODULE}                                        { yybegin(YYINITIAL); return LengineTypes.MODULE; }
 <YYINITIAL> {REQUIRE}                                       { yybegin(YYINITIAL); return LengineTypes.REQUIRE; }
 <YYINITIAL> {IMPORT}                                        { yybegin(YYINITIAL); return LengineTypes.IMPORT; }

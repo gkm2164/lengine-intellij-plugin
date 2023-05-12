@@ -9,8 +9,10 @@ import io.lengine.lengineintellijplugin.psi.impl.*;
 public interface LengineTypes {
 
   IElementType ARRAY = new LengineElementType("ARRAY");
+  IElementType CASE_STMT = new LengineElementType("CASE_STMT");
   IElementType CLAUSE = new LengineElementType("CLAUSE");
   IElementType COMPLEX_NUMBER = new LengineElementType("COMPLEX_NUMBER");
+  IElementType COND_STMT = new LengineElementType("COND_STMT");
   IElementType DEF_STMT = new LengineElementType("DEF_STMT");
   IElementType DEF_SYMBOL = new LengineElementType("DEF_SYMBOL");
   IElementType DO_STMT = new LengineElementType("DO_STMT");
@@ -41,13 +43,16 @@ public interface LengineTypes {
   IElementType TYPE = new LengineElementType("TYPE");
   IElementType VALUES = new LengineElementType("VALUES");
 
+  IElementType CASE = new LengineTokenType("CASE");
   IElementType CHARACTER = new LengineTokenType("CHARACTER");
   IElementType COMMENT = new LengineTokenType("COMMENT");
   IElementType COMPLEX_NUMBER_PARENTHESIS = new LengineTokenType("COMPLEX_NUMBER_PARENTHESIS");
   IElementType CRLF = new LengineTokenType("CRLF");
   IElementType DEF = new LengineTokenType("DEF");
+  IElementType DEFAULT = new LengineTokenType("DEFAULT");
   IElementType DO = new LengineTokenType("DO");
   IElementType EXPORT = new LengineTokenType("EXPORT");
+  IElementType FALSE = new LengineTokenType("FALSE");
   IElementType FN = new LengineTokenType("FN");
   IElementType FOR = new LengineTokenType("FOR");
   IElementType IF = new LengineTokenType("IF");
@@ -76,6 +81,7 @@ public interface LengineTypes {
   IElementType STRING = new LengineTokenType("STRING");
   IElementType STRING_CONT = new LengineTokenType("STRING_CONT");
   IElementType SYMBOL = new LengineTokenType("SYMBOL");
+  IElementType TRUE = new LengineTokenType("TRUE");
   IElementType TRY = new LengineTokenType("TRY");
   IElementType VAR = new LengineTokenType("VAR");
   IElementType WHEN = new LengineTokenType("WHEN");
@@ -86,11 +92,17 @@ public interface LengineTypes {
       if (type == ARRAY) {
         return new LengineArrayImpl(node);
       }
+      else if (type == CASE_STMT) {
+        return new LengineCaseStmtImpl(node);
+      }
       else if (type == CLAUSE) {
         return new LengineClauseImpl(node);
       }
       else if (type == COMPLEX_NUMBER) {
         return new LengineComplexNumberImpl(node);
+      }
+      else if (type == COND_STMT) {
+        return new LengineCondStmtImpl(node);
       }
       else if (type == DEF_STMT) {
         return new LengineDefStmtImpl(node);

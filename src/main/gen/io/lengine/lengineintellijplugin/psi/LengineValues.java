@@ -11,6 +11,9 @@ public interface LengineValues extends PsiElement {
   LengineArray getArray();
 
   @Nullable
+  LengineCaseStmt getCaseStmt();
+
+  @Nullable
   LengineClause getClause();
 
   @Nullable

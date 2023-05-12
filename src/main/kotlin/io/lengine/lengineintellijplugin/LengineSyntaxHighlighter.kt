@@ -24,6 +24,10 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
             LengineTypes.RIGHT_PARENTHESIS -> PARENTHESIS_KEYS
             LengineTypes.COMPLEX_NUMBER_PARENTHESIS -> PARENTHESIS_KEYS
             LengineTypes.LAMBDA_PARENTHESIS -> PARENTHESIS_KEYS
+            LengineTypes.TRUE,
+            LengineTypes.FALSE,
+            LengineTypes.CASE,
+            LengineTypes.DEFAULT,
             LengineTypes.MODULE,
             LengineTypes.IMPORT,
             LengineTypes.REQUIRE,

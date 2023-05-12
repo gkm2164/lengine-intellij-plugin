@@ -61,6 +61,33 @@ public class LengineParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // LEFT_PARENTHESIS CASE cond_stmt* DEFAULT values RIGHT_PARENTHESIS
+  public static boolean case_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_PARENTHESIS, CASE);
+    r = r && case_stmt_2(b, l + 1);
+    r = r && consumeToken(b, DEFAULT);
+    r = r && values(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, CASE_STMT, r);
+    return r;
+  }
+
+  // cond_stmt*
+  private static boolean case_stmt_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_stmt_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!cond_stmt(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "case_stmt_2", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
   // (LEFT_PARENTHESIS values* RIGHT_PARENTHESIS)
   //         |   (LAZY_PARENTHESIS values* RIGHT_PARENTHESIS)
   public static boolean clause(PsiBuilder b, int l) {
@@ -132,6 +159,21 @@ public class LengineParser implements PsiParser, LightPsiParser {
     r = r && numbers_value(b, l + 1);
     r = r && consumeToken(b, RIGHT_PARENTHESIS);
     exit_section_(b, m, COMPLEX_NUMBER, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LEFT_PARENTHESIS values values RIGHT_PARENTHESIS
+  public static boolean cond_stmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "cond_stmt")) return false;
+    if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LEFT_PARENTHESIS);
+    r = r && values(b, l + 1);
+    r = r && values(b, l + 1);
+    r = r && consumeToken(b, RIGHT_PARENTHESIS);
+    exit_section_(b, m, COND_STMT, r);
     return r;
   }
 
@@ -721,6 +763,8 @@ public class LengineParser implements PsiParser, LightPsiParser {
   // SYMBOL
   //         |  OBJECT_SYMBOL
   //         |  string_value
+  //         |  TRUE
+  //         |  FALSE
   //         |  CHARACTER
   //         |  array
   //         |  numbers_value
@@ -734,6 +778,7 @@ public class LengineParser implements PsiParser, LightPsiParser {
   //         |  try_stmt
   //         |  native_stmt
   //         |  for_when_stmt
+  //         |  case_stmt
   //         |  clause
   public static boolean values(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "values")) return false;
@@ -742,6 +787,8 @@ public class LengineParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, SYMBOL);
     if (!r) r = consumeToken(b, OBJECT_SYMBOL);
     if (!r) r = string_value(b, l + 1);
+    if (!r) r = consumeToken(b, TRUE);
+    if (!r) r = consumeToken(b, FALSE);
     if (!r) r = consumeToken(b, CHARACTER);
     if (!r) r = array(b, l + 1);
     if (!r) r = numbers_value(b, l + 1);
@@ -755,6 +802,7 @@ public class LengineParser implements PsiParser, LightPsiParser {
     if (!r) r = try_stmt(b, l + 1);
     if (!r) r = native_stmt(b, l + 1);
     if (!r) r = for_when_stmt(b, l + 1);
+    if (!r) r = case_stmt(b, l + 1);
     if (!r) r = clause(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
