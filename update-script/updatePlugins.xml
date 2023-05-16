@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+The <plugins> element (required) contains the description of the plugins
+available at this repository.
+-->
+<plugins>
+    <!--
+    Each <plugin> element (required) describes one plugin in the repository.
+    Attributes:
+     - "id" (required) - used by JetBrains IDEs to uniquely identify
+       a plugin. Must match <id> in the plugin.xml file.
+     - "url" (required) - URL to download the plugin JAR/ZIP file.
+       Must be HTTPS.
+     - "version" (required) - version of this plugin. Must match <version>
+       in the plugin.xml file.
+    -->
+    <plugin
+            id="io.lengine.intellijplugin"
+            url="https://plugins.lengine.io/lengine-intellij-plugin-1.0-SNAPSHOT.jar"
+            version="0.1.0">
+        <!--
+        The <idea-version> element (required) must match the same element
+        in the plugin.xml file.
+        -->
+        <idea-version since-build="181.3" until-build="231.*"/>
+    </plugin>
+</plugins>
