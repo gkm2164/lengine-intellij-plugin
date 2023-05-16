@@ -17,7 +17,7 @@ available at this repository.
     <plugin
             id="io.lengine.intellijplugin"
             url="https://plugins.lengine.io/lengine-intellij-plugin-1.0-SNAPSHOT.jar"
-            version="0.1.0">
+            version="1.0">
         <!--
         The <idea-version> element (required) must match the same element
         in the plugin.xml file.
