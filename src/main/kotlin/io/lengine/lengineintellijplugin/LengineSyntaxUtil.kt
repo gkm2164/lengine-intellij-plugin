@@ -66,6 +66,27 @@ class LengineSyntaxUtil {
                 .text == "fn"
         }
 
+        fun isNativeVariable(element: PsiElement): Boolean {
+            if (!isVariableSymbol(element) && !isExportSymbol(element)) {
+                return false
+            }
+
+            val siblingNode = element.parent.siblings(
+                forward = true,
+                withSelf = false
+            ).firstOrNull { !it.instanceOf(PsiWhiteSpace::class) } ?: return false
+
+            return (siblingNode.elementType == LengineTypes.VALUES
+                    && siblingNode.firstChild.elementType == LengineTypes.NATIVE_STMT
+                    && isNativeVar(siblingNode.firstChild))
+        }
+
+        private fun isNativeVar(nativeStmt: PsiElement): Boolean {
+            return nativeStmt.children
+                .last()
+                .text == "fn"
+        }
+
         fun isVariableSymbol(element: PsiElement): Boolean {
             return isSymbol(element) && isDefSymbol(element.parent)
         }
