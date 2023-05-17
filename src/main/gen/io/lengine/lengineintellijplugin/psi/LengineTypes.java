@@ -79,7 +79,6 @@ public interface LengineTypes {
   IElementType RIGHT_BRACKET = new LengineTokenType("RIGHT_BRACKET");
   IElementType RIGHT_PARENTHESIS = new LengineTokenType("RIGHT_PARENTHESIS");
   IElementType STRING = new LengineTokenType("STRING");
-  IElementType STRING_CONT = new LengineTokenType("STRING_CONT");
   IElementType SYMBOL = new LengineTokenType("SYMBOL");
   IElementType TRUE = new LengineTokenType("TRUE");
   IElementType TRY = new LengineTokenType("TRY");

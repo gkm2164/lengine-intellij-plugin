@@ -680,7 +680,7 @@ class LengineLexer implements FlexLexer {
           // fall through
           case 47: break;
           case 3:
-            { yybegin(STRING_VALUE); return LengineTypes.STRING_CONT;
+            { yybegin(STRING_VALUE);
             }
           // fall through
           case 48: break;
@@ -740,7 +740,7 @@ class LengineLexer implements FlexLexer {
           // fall through
           case 59: break;
           case 15:
-            { yybegin(STRING_ESCAPE); return LengineTypes.STRING_CONT;
+            { yybegin(STRING_ESCAPE);
             }
           // fall through
           case 60: break;

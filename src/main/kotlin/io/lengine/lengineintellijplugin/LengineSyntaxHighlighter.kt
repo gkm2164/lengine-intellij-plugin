@@ -47,7 +47,6 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
             LengineTypes.RETURN,
             LengineTypes.IF,
             LengineTypes.VAR -> KEY_KEYS
-            LengineTypes.STRING_CONT,
             LengineTypes.STRING,
             LengineTypes.CHARACTER -> STRING_KEYS
             LengineTypes.FN_SYMBOL -> FN_KEYS

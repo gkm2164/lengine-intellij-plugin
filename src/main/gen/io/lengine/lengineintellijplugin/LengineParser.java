@@ -708,27 +708,15 @@ public class LengineParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STRING_CONT* STRING
+  // STRING
   public static boolean string_value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "string_value")) return false;
-    if (!nextTokenIs(b, "<string value>", STRING, STRING_CONT)) return false;
+    if (!nextTokenIs(b, STRING)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, STRING_VALUE, "<string value>");
-    r = string_value_0(b, l + 1);
-    r = r && consumeToken(b, STRING);
-    exit_section_(b, l, m, r, false, null);
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING);
+    exit_section_(b, m, STRING_VALUE, r);
     return r;
-  }
-
-  // STRING_CONT*
-  private static boolean string_value_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "string_value_0")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!consumeToken(b, STRING_CONT)) break;
-      if (!empty_element_parsed_guard_(b, "string_value_0", c)) break;
-    }
-    return true;
   }
 
   /* ********************************************************** */

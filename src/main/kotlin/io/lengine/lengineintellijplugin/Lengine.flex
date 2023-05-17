@@ -105,7 +105,7 @@ ANY_CHAR=.
 <YYINITIAL> {RATIO_NUMBER}                                  { yybegin(YYINITIAL); return LengineTypes.RATIO_NUMBER; }
 <YYINITIAL> {NUMBER}                                        { yybegin(YYINITIAL); return LengineTypes.NUMBER; }
 <YYINITIAL> {SPECIAL_NUMBERS}                               { yybegin(YYINITIAL); return LengineTypes.NUMBER; }
-<YYINITIAL> {DOUBLE_QUOTE}                                  { yybegin(STRING_VALUE); return LengineTypes.STRING_CONT; }
+<YYINITIAL> {DOUBLE_QUOTE}                                  { yybegin(STRING_VALUE); }
 <YYINITIAL> {SPECIAL_CHARACTER}                             { yybegin(YYINITIAL); return LengineTypes.CHARACTER; }
 <YYINITIAL> {CHARACTER}                                     { yybegin(YYINITIAL); return LengineTypes.CHARACTER; }
 <YYINITIAL> {EXPORT}                                        { yybegin(YYINITIAL); return LengineTypes.EXPORT; }
@@ -117,11 +117,11 @@ ANY_CHAR=.
 <WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 <WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
-<STRING_VALUE>  {ESCAPE}                                     { yybegin(STRING_ESCAPE); return LengineTypes.STRING_CONT; }
+<STRING_VALUE>  {ESCAPE}                                     { yybegin(STRING_ESCAPE); }
 <STRING_VALUE>  {DOUBLE_QUOTE}                               { yybegin(YYINITIAL); return LengineTypes.STRING; }
-<STRING_VALUE>  {ANY_CHAR}                                   { yybegin(STRING_VALUE); return LengineTypes.STRING_CONT; }
+<STRING_VALUE>  {ANY_CHAR}                                   { yybegin(STRING_VALUE); }
 
-<STRING_ESCAPE> {ANY_CHAR}                                   { yybegin(STRING_VALUE); return LengineTypes.STRING_CONT; }
+<STRING_ESCAPE> {ANY_CHAR}                                   { yybegin(STRING_VALUE); }
 
 ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
