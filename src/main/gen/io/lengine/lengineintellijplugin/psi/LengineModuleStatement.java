@@ -7,4 +7,6 @@ import com.intellij.psi.PsiElement;
 
 public interface LengineModuleStatement extends PsiElement {
 
+  void registerModule();
+
 }

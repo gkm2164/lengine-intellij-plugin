@@ -5,7 +5,9 @@ import com.intellij.codeInsight.daemon.impl.HighlightVisitor
 import com.intellij.codeInsight.daemon.impl.analysis.HighlightInfoHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.util.elementType
 import io.ktor.util.reflect.*
+import io.lengine.lengineintellijplugin.psi.LengineModuleStatement
 import io.lengine.lengineintellijplugin.psi.LengineTypes
 
 class LengineHighlightVisitor : HighlightVisitor {
@@ -16,6 +18,10 @@ class LengineHighlightVisitor : HighlightVisitor {
     }
 
     override fun visit(element: PsiElement) {
+        if (element.elementType == LengineTypes.MODULE_STATEMENT) {
+            (element as LengineModuleStatement).registerModule()
+        }
+
         if (LengineSyntaxUtil.isFunctionSymbol(element)) {
             val highlighter = LengineSyntaxUtil.getHighlighterFor(LengineTypes.FN_SYMBOL)
             val highlightInfo: HighlightInfo? = highlighter(element)

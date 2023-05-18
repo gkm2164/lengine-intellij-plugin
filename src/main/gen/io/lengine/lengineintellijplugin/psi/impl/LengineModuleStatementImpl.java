@@ -27,4 +27,9 @@ public class LengineModuleStatementImpl extends ASTWrapperPsiElement implements 
     else super.accept(visitor);
   }
 
+  @Override
+  public void registerModule() {
+    LenginePsiImplUtilKt.registerModule(this);
+  }
+
 }

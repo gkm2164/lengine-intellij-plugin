@@ -11,6 +11,8 @@
     elementTypeHolderClass="io.lengine.lengineintellijplugin.psi.LengineTypes"
     elementTypeClass="io.lengine.lengineintellijplugin.psi.LengineElementType"
     tokenTypeClass="io.lengine.lengineintellijplugin.psi.LengineTokenType"
+
+    psiImplUtilClass="io.lengine.lengineintellijplugin.psi.impl.LenginePsiImplUtilKt"
 }
 
 lengineFile ::= item_*
@@ -22,7 +24,7 @@ statement ::= module_statement
            |  require_statement
            |  stmt
 
-module_statement ::= (LEFT_PARENTHESIS MODULE SYMBOL RIGHT_PARENTHESIS)
+module_statement ::= (LEFT_PARENTHESIS MODULE SYMBOL RIGHT_PARENTHESIS) {methods = [registerModule]}
 
 import_statement ::= (LEFT_PARENTHESIS IMPORT SYMBOL RIGHT_PARENTHESIS)
 
