@@ -37,6 +37,7 @@ WHEN="when"
 OTHERWISE="otherwise"
 IN="in"
 DEF="def"
+DEFMACRO="defmacro"
 LET="let"
 LOOP="loop"
 FN="fn"
@@ -80,6 +81,7 @@ ANY_CHAR=.
 <YYINITIAL> {TRUE}                                          { yybegin(YYINITIAL); return LengineTypes.TRUE; }
 <YYINITIAL> {FALSE}                                         { yybegin(YYINITIAL); return LengineTypes.FALSE; }
 <YYINITIAL> {CASE}                                          { yybegin(YYINITIAL); return LengineTypes.CASE; }
+<YYINITIAL> {DEFMACRO}                                      { yybegin(YYINITIAL); return LengineTypes.DEFMACRO; }
 <YYINITIAL> {DEFAULT}                                       { yybegin(YYINITIAL); return LengineTypes.DEFAULT; }
 <YYINITIAL> {MODULE}                                        { yybegin(YYINITIAL); return LengineTypes.MODULE; }
 <YYINITIAL> {REQUIRE}                                       { yybegin(YYINITIAL); return LengineTypes.REQUIRE; }

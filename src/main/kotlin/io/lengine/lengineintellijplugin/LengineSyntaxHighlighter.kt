@@ -27,6 +27,7 @@ class LengineSyntaxHighlighter : SyntaxHighlighterBase() {
             LengineTypes.TRUE,
             LengineTypes.FALSE,
             LengineTypes.CASE,
+            LengineTypes.DEFMACRO,
             LengineTypes.DEFAULT,
             LengineTypes.MODULE,
             LengineTypes.IMPORT,

@@ -50,6 +50,7 @@ public interface LengineTypes {
   IElementType CRLF = new LengineTokenType("CRLF");
   IElementType DEF = new LengineTokenType("DEF");
   IElementType DEFAULT = new LengineTokenType("DEFAULT");
+  IElementType DEFMACRO = new LengineTokenType("DEFMACRO");
   IElementType DO = new LengineTokenType("DO");
   IElementType EXPORT = new LengineTokenType("EXPORT");
   IElementType FALSE = new LengineTokenType("FALSE");
