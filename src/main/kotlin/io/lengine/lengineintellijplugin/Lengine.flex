@@ -53,7 +53,7 @@ SLASH="/"
 RATIO_NUMBER = {INTEGER}("/"{INTEGER})
 NUMBER = {INTEGER}(\.{INTEGER})?
 OBJECT_SYMBOL=":"([$.a-zA-Z_\-+/*%<>=?:'&|~][$.a-zA-Z0-9_\-+/*%<>=?:'&|~]*\*?)
-SYMBOL=([$.a-zA-Z_\-+/*%<>=?:'&|~][$.a-zA-Z0-9_\-+/*%<>=?:'&|~]*\*?)
+SYMBOL=([,$.a-zA-Z_\-+/*%<>=?:'&|~][,$.a-zA-Z0-9_\-+/*%<>=?:'&|~]*\*?)
 DOUBLE_QUOTE=\"
 LEFT_BRACKET="["
 RIGHT_BRACKET="]"
